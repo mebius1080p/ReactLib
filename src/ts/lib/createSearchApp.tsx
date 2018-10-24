@@ -1,9 +1,9 @@
 import React from "react";
 
 export interface IInjectedProps {
-	onClickSearch: (ev) => void;
-	onClickReset: (ev) => void;
-	onClickPaging: (ev) => void;
+	onClickSearch: (ev: Event) => void;
+	onClickReset: (ev: Event) => void;
+	onClickPaging: (ev: Event) => void;
 	paging: IPaging;
 }
 
@@ -53,20 +53,20 @@ export function createSearchApp<T, S>(
 		/**
 		 * handleClickSearch
 		 */
-		public handleClickSearch(_ev): void {
+		public handleClickSearch(_ev: Event): void {
 			this.search();
 		}
 		/**
 		 * handleClickReset
 		 */
-		public handleClickReset(_ev): void {
+		public handleClickReset(_ev: Event): void {
 			const resetClone = JSON.stringify(resetCond);
 			this.setState({ condition: JSON.parse(resetClone) });
 		}
 		/**
 		 * handleClickPaging
 		 */
-		public handleClickPaging(_ev): void {
+		public handleClickPaging(_ev: Event): void {
 			// dd;
 		}
 		/**
