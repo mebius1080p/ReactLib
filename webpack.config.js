@@ -1,10 +1,10 @@
 const path = require("path");
 module.exports = {
 	entry: {
-		"www/index": "./src/ts/sample/index.tsx"
+		"sample/index": "./src/ts/sample/index.tsx",
 	},
 	output: {
-		path: path.resolve(__dirname, ""),
+		path: path.resolve(__dirname, "www"),
 		filename: "[name].js"
 	},
 	resolve: {
