@@ -4,7 +4,6 @@ import { IInjectedProps, IFakeEvent } from "../lib/createSearchComponent";
 import { Paging } from "../lib/Paging";
 import { createWrappedDatePicker } from "../lib/createWrappedDatePicker";
 import { DatePickerWrapper } from "../lib/DatePickerWrapper";
-import Moment from "moment";
 import { IOther } from "./App";
 
 export interface IAbc {
@@ -39,12 +38,14 @@ export const Search: React.StatelessComponent<ISearchProps> = (
 		onClickDetail
 	} = props;
 	const WrappedDatePicker = createWrappedDatePicker(DatePickerWrapper);
-	const onChangeDate = (ev: Moment.Moment | null, tag: string) => {
+	const onChangeDate = (ev: Date | null, tag: string) => {
 		if (ev !== null) {
+			const dateString = `${ev.getFullYear()}-${ev.getMonth() +
+				1}-${ev.getDate()}`;
 			const evt: IFakeEvent = {
 				target: {
 					name: tag,
-					value: ev.format("YYYY-MM-DD")
+					value: dateString
 				}
 			};
 			onChangeInput(evt);
@@ -57,15 +58,15 @@ export const Search: React.StatelessComponent<ISearchProps> = (
 				<div>
 					<DatePicker
 						customInput={<WrappedDatePicker />}
-						dateFormat="YYYY-MM-DD"
+						dateFormat="YYYY-MM-dd"
 						selected={
 							condProps.from_x === ""
 								? null
-								: Moment(condProps.from_x)
+								: new Date(condProps.from_x)
 						}
 						name="from_x"
-						onChange={ev => {
-							onChangeDate(ev, "from_x");
+						onChange={(date: Date) => {
+							onChangeDate(date, "from_x");
 						}}
 					/>
 				</div>
