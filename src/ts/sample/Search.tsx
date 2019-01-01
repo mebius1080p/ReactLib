@@ -68,6 +68,7 @@ export const Search: React.StatelessComponent<ISearchProps> = (
 						onChange={(date: Date) => {
 							onChangeDate(date, "from_x");
 						}}
+						locale="ja"
 					/>
 				</div>
 			</div>

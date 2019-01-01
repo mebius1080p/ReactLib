@@ -1,4 +1,10 @@
 import * as React from "react";
+import ja from "date-fns/locale/ja";
+import { registerLocale } from "react-datepicker";
+
+(ja.options as any).weekStartsOn = 0; // 日曜から始まるようにする
+
+registerLocale("ja", ja);
 
 interface IWrappedDatePickerProps {
 	name?: string;
