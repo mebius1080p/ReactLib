@@ -1,10 +1,8 @@
 import * as React from "react";
-import DatePicker from "react-datepicker";
 import { IInjectedProps, IFakeEvent } from "../lib/createSearchComponent";
 import { Paging } from "../lib/Paging";
-import { createWrappedDatePicker } from "../lib/createWrappedDatePicker";
-import { DatePickerWrapper } from "../lib/DatePickerWrapper";
 import { IOther } from "./App";
+import { InputDate } from "../lib/InputDate";
 
 export interface IAbc {
 	dd: string;
@@ -37,38 +35,30 @@ export const Search: React.StatelessComponent<ISearchProps> = (
 		onClickAdd,
 		onClickDetail
 	} = props;
-	const WrappedDatePicker = createWrappedDatePicker(DatePickerWrapper);
-	const onChangeDate = (ev: Date | null, tag: string) => {
-		if (ev !== null) {
-			const dateString = `${ev.getFullYear()}-${ev.getMonth() +
-				1}-${ev.getDate()}`;
-			const evt: IFakeEvent = {
-				target: {
-					name: tag,
-					value: dateString
-				}
-			};
-			onChangeInput(evt);
-		}
+
+	const handleChangeInput = (
+		ev: React.SyntheticEvent<any, Event> | undefined,
+		name: string,
+		value: string
+	) => {
+		const event: IFakeEvent = {
+			target: {
+				name,
+				value
+			}
+		};
+		onChangeInput(event);
 	};
+
 	return (
 		<React.Fragment>
 			<div>
 				<div>search</div>
 				<div>
-					<DatePicker
-						customInput={<WrappedDatePicker />}
-						dateFormat="YYYY-MM-dd"
-						selected={
-							condProps.from_x === ""
-								? null
-								: new Date(condProps.from_x)
-						}
+					<InputDate
 						name="from_x"
-						onChange={(date: Date) => {
-							onChangeDate(date, "from_x");
-						}}
-						locale="ja"
+						value={condProps.from_x}
+						handleChangeInput={handleChangeInput}
 					/>
 				</div>
 			</div>
