@@ -21,6 +21,10 @@ interface IInputDateProps {
 
 type TBS4Size = "xs" | "sm" | "md" | "lg" | "xl" | "";
 
+/**
+ * bootstrap4 対応日付選択コンポーネント
+ * @param props props
+ */
 export const InputDate: React.StatelessComponent<IInputDateProps> = (
 	props: IInputDateProps
 ) => {
@@ -76,55 +80,64 @@ interface IInputDateComponentProps {
 	) => void; // injected by react-datepicker
 }
 
-const InputDateComponent: React.StatelessComponent<IInputDateComponentProps> = (
-	props: IInputDateComponentProps
-) => {
-	const {
-		name,
-		value,
-		size = "",
-		extraClass = "",
-		onClick = (
-			date: Date | null,
-			ev: React.SyntheticEvent<any, Event>
-		) => {}
-	} = props;
+interface IInputDateComponentState {}
 
-	const inputClass =
-		"form-control " +
-		(size === "" ? "" : "form-control-" + size) +
-		" " +
-		extraClass;
-	let date: Date | null = null;
-	if (value !== "") {
-		date = new Date(value);
-		if (date.toString() === "Invalid Date") {
-			date = null;
-		}
+class InputDateComponent extends React.Component<
+	IInputDateComponentProps,
+	IInputDateComponentState
+> {
+	constructor(props: IInputDateComponentProps) {
+		super(props);
+		this.state = {
+			dd: ""
+		};
 	}
-
-	return (
-		<div className="input-group">
-			<input
-				type="text"
-				name={name}
-				className={inputClass}
-				value={value}
-				onChange={ev => {
-					// 変更させない
-				}}
-				readOnly={true}
-			/>
-			<div className="input-group-append">
-				<div
-					className="input-group-text"
-					onClick={ev => {
-						onClick(date, ev);
+	public render(): JSX.Element {
+		const {
+			name,
+			value,
+			size = "",
+			extraClass = "",
+			onClick = (
+				date: Date | null,
+				ev: React.SyntheticEvent<any, Event>
+			) => {}
+		} = this.props;
+		const inputClass =
+			"form-control " +
+			(size === "" ? "" : "form-control-" + size) +
+			" " +
+			extraClass;
+		let date: Date | null = null;
+		if (value !== "") {
+			date = new Date(value);
+			if (date.toString() === "Invalid Date") {
+				date = null;
+			}
+		}
+		return (
+			<div className="input-group">
+				<input
+					type="text"
+					name={name}
+					className={inputClass}
+					value={value}
+					onChange={ev => {
+						// 変更させない
 					}}
-				>
-					<i className="fas fa-calendar-alt" />
+					readOnly={true}
+				/>
+				<div className="input-group-append">
+					<div
+						className="input-group-text"
+						onClick={ev => {
+							onClick(date, ev);
+						}}
+					>
+						<i className="fas fa-calendar-alt" />
+					</div>
 				</div>
 			</div>
-		</div>
-	);
-};
+		);
+	}
+}
