@@ -1,15 +1,37 @@
 import * as React from "react";
 import { storiesOf } from "@storybook/react";
-import { number, text, boolean, withKnobs } from "@storybook/addon-knobs";
+import {
+	text,
+	object,
+	withKnobs
+} from "@storybook/addon-knobs";
 import { HogeButton } from "../lib/HogeButton";
 
 const stories = storiesOf("First sample", module);
+// Add the `withKnobs` decorator to add knobs support to your stories.
+// You can also configure `withKnobs` as a global decorator.
+stories.addDecorator(withKnobs);
 
 stories.add(
-	"simple div",
+	"component sample",
 	() => {
-		const name = text("Name", "ボタン名");
-		return <HogeButton str={name} />;
+		const groupid = "sample1";
+		const name = text("Name", "ボタン名", groupid);
+		const defaultAttr = {
+			type: "button",
+			cls: "sample-class"
+		};
+		const attr = object("obj_test", defaultAttr, groupid);
+		const onClickHandler = (ev: React.MouseEvent) => {
+			alert("hey");
+		};
+		return (
+			<HogeButton
+				str={name}
+				attr={attr}
+				onClickHandler={onClickHandler}
+			/>
+		);
 	},
 	{ info: { inline: true } }
 );
