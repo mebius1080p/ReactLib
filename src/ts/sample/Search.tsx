@@ -1,8 +1,8 @@
 import * as React from "react";
 import { IInjectedProps, IFakeEvent } from "../lib/createSearchComponent";
-import { Paging } from "../lib/Paging";
 import { IOther } from "./App";
 import { InputDate } from "../lib/InputDate";
+import { Paging2 } from "../lib/Paging2";
 
 export interface IAbc {
 	dd: string;
@@ -62,7 +62,7 @@ export const Search: React.StatelessComponent<ISearchProps> = (
 					/>
 				</div>
 			</div>
-			<Paging paging={pageProps} onClickPage={onClickPaging} />
+			<Paging2 params={pageProps} handleClickPage={onClickPaging} />
 			<table>
 				<tbody>
 					<tr>

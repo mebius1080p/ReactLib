@@ -1,4 +1,4 @@
-import { IPaging } from "../lib/Paging";
+import { IPaging } from "../lib/Paging2";
 import { IAbc, IConditionHoge } from "./Search";
 
 export class HogeAPI {

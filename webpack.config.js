@@ -59,5 +59,11 @@ module.exports = {
 			}
 		}
 	},
+	devServer: {
+		contentBase: path.join(__dirname, "www"),
+		progress: true,
+		historyApiFallback: true
+	},
+	// mode: "development",
 	mode: "production"
 };

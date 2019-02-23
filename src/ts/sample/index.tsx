@@ -4,6 +4,7 @@ import { SSManager } from "../lib/SSManager";
 import { App } from "./App";
 import { Nl2br } from "../lib/Nl2br";
 import { PriceFormatter } from "../lib/PriceFormatter";
+import { IPaging, Paging2 } from "../lib/Paging2";
 
 "use strict";
 document.addEventListener(
@@ -22,6 +23,27 @@ document.addEventListener(
 			appElm
 		);
 
+		const pagingApp = document.getElementById("paging");
+		if (pagingApp === null) {
+			throw new Error("paging not found");
+		}
+		const pagingParams: IPaging = {
+			totalcount: 48,
+			page: 2,
+			perpage: 20,
+			totalpage: 3
+		};
+		const handleClickPage = (ev: React.MouseEvent, page: number) => {};
+		ReactDOM.render(
+			<React.StrictMode>
+				<Paging2
+					params={pagingParams}
+					handleClickPage={handleClickPage}
+				/>
+			</React.StrictMode>,
+			pagingApp
+		);
+
 		const nl2brapp = document.getElementById("nl2brapp");
 		if (nl2brapp === null) {
 			throw new Error("app not found");
@@ -32,7 +54,7 @@ document.addEventListener(
 		ReactDOM.render(
 			<React.StrictMode>
 				<div>
-					<hr/>
+					<hr />
 					<Nl2br str={multilineSample} />
 				</div>
 			</React.StrictMode>,
@@ -47,7 +69,7 @@ document.addEventListener(
 		ReactDOM.render(
 			<React.StrictMode>
 				<React.Fragment>
-					<hr/>
+					<hr />
 					<div>数値にカンマを入れる。古めのデバイスはサポート外</div>
 					<ul>
 						{prices.map((p, index) => {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IPaging } from "./Paging";
+import { IPaging } from "./Paging2";
 import { objAssign } from "./objAssign";
 import { SSManager } from "./SSManager";
 
