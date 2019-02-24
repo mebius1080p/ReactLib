@@ -6,7 +6,7 @@ export class PagingUtil {
 	 * calcPagingNumber ページング表示で、表示すべき最初の数値と最後の数値を計算するメソッド
 	 * @param {number} page 現在のページ数。1 以上
 	 * @param {number} totalpage 全ページ数
-	 * @returns {pagingNumber} pagingNumber インターフェースに準じたオブジェクト
+	 * @returns {IPagingNumber} IPagingNumber インターフェースを実装したオブジェクト
 	 */
 	public static calcPagingNumber(
 		page: number,
@@ -54,10 +54,8 @@ export class PagingUtil {
 				result.hasNext = true;
 			}
 		} else {
-			// 10n+1 - 10n+9 まで
-			if (result.close + 1 < totalpage) {
-				result.hasNext = true;
-			}
+			// closeRest が 0 ではないと言うことは最後のページ。
+			// 次のページは絶対にない
 		}
 
 		// ページ数の配列作成
