@@ -20,7 +20,11 @@ interface ISearchProps extends IInjectedProps<IConditionHoge, IOther> {
 	onClickAdd: (ev: React.MouseEvent) => void;
 	onClickDetail: (ev: React.MouseEvent) => void;
 }
-
+/**
+ * サンプルとして残しておく
+ * @deprecated
+ * @param props props
+ */
 export const Search: React.StatelessComponent<ISearchProps> = (
 	props: ISearchProps
 ) => {

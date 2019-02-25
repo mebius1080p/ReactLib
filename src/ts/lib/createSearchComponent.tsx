@@ -32,6 +32,7 @@ interface IFakeTarget {
 
 /**
  * 一覧検索用コンポーネントを作って返す HOC 関数
+ * @deprecated 参考までにとっておく
  * @param WrappedComponent 中に通すコンポーネント
  * @param initialCondition 条件リセット時に設定する条件オブジェクト
  * @param savedCondition ls などに保存しておいた条件オブジェクト
@@ -159,7 +160,7 @@ export default function createSearchComponent<
 		/**
 		 * handleChangeInput
 		 * @param ev イベント
-		 * @param isCheck チェック系 input か同課のフラグ
+		 * @param isCheck チェック系 input か否かのフラグ
 		 * @param values チェックボックスの変更時に設定して呼び出す
 		 */
 		public handleChangeInput(
