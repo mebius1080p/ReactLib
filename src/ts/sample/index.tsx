@@ -20,23 +20,6 @@ document.addEventListener(
 			appElm
 		);
 
-		const nl2brapp = document.getElementById("nl2brapp");
-		if (nl2brapp === null) {
-			throw new Error("app not found");
-		}
-		const multilineSample = `改行付き
-		サンプル
-		文章`;
-		ReactDOM.render(
-			<React.StrictMode>
-				<div>
-					<hr />
-					<Nl2br str={multilineSample} />
-				</div>
-			</React.StrictMode>,
-			nl2brapp
-		);
-
 		const priceApp = document.getElementById("priceapp");
 		if (priceApp === null) {
 			throw new Error("app not found");
