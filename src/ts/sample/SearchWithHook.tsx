@@ -1,7 +1,7 @@
 import * as React from "react";
 import { HogeAPI } from "./HogeAPI";
-import { IPaging, Paging2 } from "../lib/Paging2";
-import { SSManager } from "../lib/SSManager";
+import { Paging2 } from "../lib/Paging2";
+import { useBasicSearch } from "../lib/useBasicSearch";
 
 interface ISearchWithHookProps {}
 
@@ -23,15 +23,6 @@ const initialCondition: ISearchWithHookCondition = {
 	forcheck: []
 };
 
-const initialPageObj: IPaging = {
-	totalcount: 0,
-	page: 1,
-	perpage: 10,
-	totalpage: 1
-};
-
-const ssm = new SSManager("searchwithhook");
-
 /**
  * hook で作成した検索コンポーネントのサンプル
  * @param props props
@@ -39,79 +30,19 @@ const ssm = new SSManager("searchwithhook");
 export const SearchWithHook: React.StatelessComponent<ISearchWithHookProps> = (
 	props: ISearchWithHookProps
 ) => {
-	//配列やオブジェクトがなければスプレッド演算子でもよい
-	const [condition, setCondition] = React.useState<ISearchWithHookCondition>(
-		JSON.parse(JSON.stringify(initialCondition))
+	const {
+		handleChangeInput,
+		handleSearch,
+		handleReset,
+		handleClickPage,
+		condition,
+		pageObj,
+		records
+	} = useBasicSearch<ISearchWithHookCondition, IRecord>(
+		"searchwithhook",
+		initialCondition,
+		HogeAPI.search2
 	);
-
-	const handleChangeInput = (
-		ev: React.ChangeEvent<HTMLInputElement>,
-		isCheckbox: boolean = false
-	) => {
-		const { name, value } = ev.target;
-		if (name in condition) {
-			if (isCheckbox) {
-				const currentValues = condition[name];
-				if (!Array.isArray(currentValues)) {
-					return;
-				}
-				const targetIndex = currentValues.indexOf(value);
-				if (targetIndex === -1) {
-					currentValues.push(value);
-				} else {
-					const removed = currentValues.splice(targetIndex, 1);
-				}
-				condition[name] = [...currentValues];
-				setCondition({ ...condition });
-			} else {
-				condition[name] = value;
-				setCondition({ ...condition });
-			}
-		}
-	};
-
-	const [pageObj, setPageobj] = React.useState<IPaging>(initialPageObj);
-
-	const [records, setRecords] = React.useState<IRecord[]>([]);
-	const handleSearch = async (ev: React.MouseEvent | null) => {
-		console.log("search");
-		//検索とか
-		if (ssm.CanUseSS) {
-			const stringCondition = JSON.stringify(condition);
-			ssm.save(stringCondition);
-		}
-		const response = await HogeAPI.search2(condition, pageObj.page);
-		const { data, ...rest } = response;
-		setRecords(data);
-		setPageobj(rest);
-	};
-	const handleReset = (ev: React.MouseEvent) => {
-		setCondition(JSON.parse(JSON.stringify(initialCondition)));
-	};
-	const handleClickPage = async (ev: React.MouseEvent, page: number) => {
-		const response = await HogeAPI.search2(condition, page);
-		const { data, ...rest } = response;
-		setRecords(data);
-		setPageobj(rest);
-	};
-
-	//@todo ある select を変更すると、別の select が変わる、というような場合 xxxxxxxxxxx
-
-	// 自動検索
-	React.useEffect(() => {
-		console.log("auto search once");
-		if (ssm.CanUseSS) {
-			console.log("restore condition from ss");
-			const storedConditionString = ssm.restore();
-			if (storedConditionString !== "") {
-				const storedCondition: ISearchWithHookCondition = JSON.parse(
-					storedConditionString
-				);
-				setCondition({ ...storedCondition });
-			}
-		}
-		handleSearch(null);
-	}, []);
 
 	return (
 		<div className="p-3">
