@@ -1,6 +1,7 @@
 import * as React from "react";
 
 interface IPriceFormatterProps {
+	/** カンマ表示にする数 */
 	price: number;
 }
 

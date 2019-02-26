@@ -1,6 +1,7 @@
 import * as React from "react";
 
 interface INl2brProps {
+	/** 改行付きにする文字列 */
 	str: string;
 }
 
