@@ -2,7 +2,7 @@ const path = require("path");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
-module.exports = (baseConfig, env, config) => {
+module.exports = ({ config, mode }) => {
 	config.module.rules.push({
 		test: /\.(ts|tsx)$/,
 		use: [
@@ -28,8 +28,7 @@ module.exports = (baseConfig, env, config) => {
 	config.resolve.extensions.push(".ts", ".tsx");
 	config.plugins.push(
 		new ForkTsCheckerWebpackPlugin({
-			checkSyntacticErrors: true,
-			workers: ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE
+			checkSyntacticErrors: true
 		})
 	);
 	config.optimization.minimizer.push(
