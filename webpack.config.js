@@ -37,13 +37,18 @@ module.exports = {
 			{
 				test: /\.(js)$/,
 				loader: "babel-loader",
-				exclude: "/node_modules"
+				exclude: "/node_modules",
+				options: {
+					cacheDirectory: true
+				}
 			}
 		]
 	},
 	plugins: [
 		new ForkTsCheckerWebpackPlugin({
 			checkSyntacticErrors: true
+			// workers: ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE,
+			// useTypescriptIncrementalApi: false
 		})
 	],
 	optimization: {
