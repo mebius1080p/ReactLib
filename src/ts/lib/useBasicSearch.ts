@@ -5,6 +5,12 @@ import { SSManager } from "./SSManager";
 export type TKeyValue = {
 	[str: string]: string | string[] | number;
 };
+export interface IFakeEvent {
+	target: {
+		name: string;
+		value: string;
+	};
+}
 
 const initialPageObj: IPaging = {
 	total: 0,
@@ -34,7 +40,9 @@ export function useBasicSearch<T extends TKeyValue, R>(
 	);
 
 	const handleChangeInput = (
-		ev: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+		ev:
+			| React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+			| IFakeEvent,
 		isCheckbox: boolean = false
 	) => {
 		const { name, value } = ev.target;
