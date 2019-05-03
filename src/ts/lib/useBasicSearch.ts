@@ -3,7 +3,7 @@ import { IPaging } from "./Paging2";
 import { SSManager } from "./SSManager";
 
 export type TKeyValue = {
-	[str: string]: string | string[];
+	[str: string]: string | string[] | number;
 };
 
 const initialPageObj: IPaging = {
@@ -34,7 +34,7 @@ export function useBasicSearch<T extends TKeyValue, R>(
 	);
 
 	const handleChangeInput = (
-		ev: React.ChangeEvent<HTMLInputElement>,
+		ev: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
 		isCheckbox: boolean = false
 	) => {
 		const { name, value } = ev.target;
