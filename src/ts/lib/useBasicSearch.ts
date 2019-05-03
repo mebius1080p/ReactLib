@@ -2,12 +2,12 @@ import * as React from "react";
 import { IPaging } from "./Paging2";
 import { SSManager } from "./SSManager";
 
-type TKeyValue = {
+export type TKeyValue = {
 	[str: string]: string | string[];
 };
 
 const initialPageObj: IPaging = {
-	totalcount: 0,
+	total: 0,
 	page: 1,
 	perpage: 10,
 	totalpage: 1
@@ -28,7 +28,7 @@ export function useBasicSearch<T extends TKeyValue, R>(
 	) => Promise<IPaging & { data: R[] }>
 ) {
 	const ssm = new SSManager(sskey);
-	//配列やオブジェクトがなければスプレッド演算子でもよい
+	// 配列やオブジェクトがなければスプレッド演算子でもよい
 	const [condition, setCondition] = React.useState<T>(
 		JSON.parse(JSON.stringify(initialCondition))
 	);
@@ -65,27 +65,35 @@ export function useBasicSearch<T extends TKeyValue, R>(
 
 	const [records, setRecords] = React.useState<R[]>([]);
 	const handleSearch = async (ev: React.MouseEvent | null) => {
-		//検索とか
+		// 検索とか
 		if (ssm.CanUseSS) {
 			const stringCondition = JSON.stringify(condition);
 			ssm.save(stringCondition);
 		}
-		const response = await searchFunction(condition, pageObj.page);
-		const { data, ...rest } = response;
-		setRecords(data);
-		setPageobj(rest);
+		try {
+			const response = await searchFunction(condition, pageObj.page);
+			const { data, ...rest } = response;
+			setRecords(data);
+			setPageobj(rest);
+		} catch (error) {
+			console.dir(error);
+		}
 	};
 	const handleReset = (ev: React.MouseEvent) => {
 		setCondition(JSON.parse(JSON.stringify(initialCondition)));
 	};
 	const handleClickPage = async (ev: React.MouseEvent, page: number) => {
-		const response = await searchFunction(condition, page);
-		const { data, ...rest } = response;
-		setRecords(data);
-		setPageobj(rest);
+		try {
+			const response = await searchFunction(condition, page);
+			const { data, ...rest } = response;
+			setRecords(data);
+			setPageobj(rest);
+		} catch (error) {
+			console.dir(error);
+		}
 	};
 
-	//@todo ある select を変更すると、別の select が変わる、というような場合 xxxxxxxxxxx
+	// @todo ある select を変更すると、別の select が変わる、というような場合 xxxxxxxxxxx
 
 	// 自動検索
 	React.useEffect(() => {

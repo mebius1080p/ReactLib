@@ -9,7 +9,7 @@ interface IPaging2Props {
 }
 
 export interface IPaging {
-	totalcount: number;
+	total: number;
 	page: number;
 	perpage: number;
 	totalpage: number;
@@ -126,7 +126,7 @@ export const Paging2: React.StatelessComponent<IPaging2Props> = (
 				</ul>
 			</div>
 			<div>
-				{`全 ${params.totalcount} 件 (${params.page} / ${
+				{`全 ${params.total} 件 (${params.page} / ${
 					params.totalpage
 				} ページ) ${params.perpage} 件ずつ表示`}
 			</div>
