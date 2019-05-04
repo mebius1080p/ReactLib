@@ -34,9 +34,18 @@ export function useBasicSearch<T extends TKeyValue, R>(
 	) => Promise<IPaging & { data: R[] }>
 ) {
 	const ssm = new SSManager(sskey);
+	let applyCondition: T = { ...initialCondition };
+	if (ssm.CanUseSS) {
+		const storedConditionString = ssm.restore();
+		if (storedConditionString !== "") {
+			const storedCondition: T = JSON.parse(storedConditionString);
+			applyCondition = { ...storedCondition };
+		}
+	}
+
 	// 配列やオブジェクトがなければスプレッド演算子でもよい
 	const [condition, setCondition] = React.useState<T>(
-		JSON.parse(JSON.stringify(initialCondition))
+		JSON.parse(JSON.stringify({ ...applyCondition }))
 	);
 
 	const handleChangeInput = (
@@ -105,13 +114,6 @@ export function useBasicSearch<T extends TKeyValue, R>(
 
 	// 自動検索
 	React.useEffect(() => {
-		if (ssm.CanUseSS) {
-			const storedConditionString = ssm.restore();
-			if (storedConditionString !== "") {
-				const storedCondition: T = JSON.parse(storedConditionString);
-				setCondition({ ...storedCondition });
-			}
-		}
 		handleSearch(null);
 	}, []);
 
