@@ -9,8 +9,8 @@ interface IHogeButtonProps {
 	onClickHandler: (ev: React.MouseEvent) => void;
 }
 
-interface IHogeAttr {
-	type: string;
+export interface IHogeAttr {
+	type: "button" | "submit" | "reset" | undefined;
 	cls: string;
 }
 

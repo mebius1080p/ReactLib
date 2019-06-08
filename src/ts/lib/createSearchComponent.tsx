@@ -30,6 +30,12 @@ interface IFakeTarget {
 	value: any;
 }
 
+
+
+type TCondition = {
+	[str: string]: any;
+};
+
 /**
  * 一覧検索用コンポーネントを作って返す HOC 関数
  * @deprecated 参考までにとっておく
@@ -41,7 +47,7 @@ interface IFakeTarget {
  * @param other 検索条件ではないが、追加のオブジェクトなど (select に使うリストなど)
  */
 export default function createSearchComponent<
-	T extends { [str: string]: any },
+	T extends TCondition,
 	S,
 	U = {}
 >(
@@ -71,7 +77,7 @@ export default function createSearchComponent<
 			// T は中身が階層化していない型であること
 			this.state = {
 				paging: {
-					totalcount: 0,
+					total: 0,
 					page: 1,
 					perpage: 20,
 					totalpage: 1
@@ -104,7 +110,7 @@ export default function createSearchComponent<
 				const result = await searchAPI(condition, page);
 				this.setState({
 					paging: {
-						totalcount: result.totalcount,
+						total: result.total,
 						page: result.page,
 						perpage: result.perpage,
 						totalpage: result.totalpage
@@ -174,7 +180,7 @@ export default function createSearchComponent<
 				// 通常はコチラ
 				if (name in condition) {
 					const key = name;
-					condition[key] = value;
+					(condition as TCondition)[key] = value;
 					this.setState({
 						condition
 					});
@@ -183,7 +189,7 @@ export default function createSearchComponent<
 				// checkbox のときはコチラ
 				if (name in condition) {
 					const key = name;
-					condition[key] = values;
+					(condition as TCondition)[key] = values;
 					this.setState({
 						condition
 					});

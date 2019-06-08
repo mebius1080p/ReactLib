@@ -8,7 +8,7 @@ export class HogeAPI {
 		page: number
 	): Promise<IPaging & { data: IAbc[] }> {
 		return {
-			totalcount: 0,
+			total: 0,
 			page: 1,
 			perpage: 1,
 			totalpage: 1,
@@ -45,7 +45,7 @@ export class HogeAPI {
 			}
 		];
 		return {
-			totalcount: 10,
+			total: 10,
 			page: 1,
 			perpage: 4,
 			totalpage: 3,

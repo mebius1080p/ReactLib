@@ -67,10 +67,10 @@ export function useBasicSearch<T extends TKeyValue, R>(
 				} else {
 					const removed = currentValues.splice(targetIndex, 1);
 				}
-				condition[name] = [...currentValues];
+				(condition as TKeyValue)[name] = [...currentValues];
 				setCondition({ ...condition });
 			} else {
-				condition[name] = value;
+				(condition as TKeyValue)[name] = value;
 				setCondition({ ...condition });
 			}
 		}

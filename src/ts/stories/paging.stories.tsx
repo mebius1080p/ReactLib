@@ -14,7 +14,7 @@ stories.add(
 	() => {
 		const groupid = "paging1";
 		const defaultParams: IPaging = {
-			totalcount: 48,
+			total: 48,
 			page: 2,
 			perpage: 20,
 			totalpage: 3
@@ -35,7 +35,7 @@ stories.add(
 	() => {
 		const groupid = "paging1";
 		const defaultParams: IPaging = {
-			totalcount: 148,
+			total: 148,
 			page: 2,
 			perpage: 10,
 			totalpage: 15
