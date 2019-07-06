@@ -8,7 +8,7 @@ registerLocale("ja", ja);
 
 interface IInputDateProps {
 	name: string;
-	value: string; //yyyy-mm-dd など、new Date() して使用可能なもの
+	value: string; // yyyy-mm-dd など、new Date() して使用可能なもの
 	handleChangeInput: (
 		ev: React.SyntheticEvent<any, Event> | undefined,
 		name: string,
@@ -48,7 +48,7 @@ export const InputDate: React.StatelessComponent<IInputDateProps> = (
 	return (
 		<DatePicker
 			customInput={
-				<InputDateComponent
+				<InputDateClassVersion
 					name={name}
 					value={value}
 					size={size}
@@ -69,9 +69,9 @@ export const InputDate: React.StatelessComponent<IInputDateProps> = (
 	);
 };
 
-interface IInputDateComponentProps {
+interface IInputDateClassVersionProps {
 	name: string;
-	value: string; //yyyy-mm-dd など、new Date() して解析可能なもの
+	value: string; // yyyy-mm-dd など、new Date() して解析可能なもの
 	size: TBS4Size;
 	extraClass: string;
 	// injected by react-datepicker
@@ -81,53 +81,59 @@ interface IInputDateComponentProps {
 	) => void;
 }
 
-const InputDateComponent: React.StatelessComponent<IInputDateComponentProps> = (
-	props: IInputDateComponentProps
-) => {
-	const {
-		name,
-		value,
-		size = "",
-		extraClass = "",
-		onClick = (
-			date: Date | null,
-			ev: React.SyntheticEvent<any, Event>
-		) => {}
-	} = props;
+interface IInputDateClassVersionState {}
 
-	const inputClass =
-		"form-control " +
-		(size === "" ? "" : "form-control-" + size) +
-		" " +
-		extraClass;
-	let date: Date | null = null;
-	date = new Date(value);
-	if (date.toString() === "Invalid Date") {
-		date = null;
+class InputDateClassVersion extends React.Component<
+	IInputDateClassVersionProps,
+	IInputDateClassVersionState
+> {
+	constructor(props: IInputDateClassVersionProps) {
+		super(props);
+		this.state = {};
 	}
+	public render(): JSX.Element {
+		const {
+			name,
+			value,
+			size = "",
+			extraClass = "",
+			onClick = (
+				date: Date | null,
+				ev: React.SyntheticEvent<any, Event>
+			) => {}
+		} = this.props;
 
-	return (
-		<div className="input-group">
-			<input
-				type="text"
-				name={name}
-				className={inputClass}
-				value={value}
-				onChange={ev => {
-					// 変更させない
-				}}
-				readOnly={true}
-			/>
-			<div className="input-group-append">
-				<div
-					className="input-group-text"
-					onClick={ev => {
-						onClick(date, ev);
+		const sizeClass = size === "" ? "" : `form-control-${size}`;
+		const inputClass = `form-control ${sizeClass} ${extraClass}`;
+		let date: Date | null = null;
+		date = new Date(value);
+		if (date.toString() === "Invalid Date") {
+			date = null;
+		}
+
+		return (
+			<div className="input-group">
+				<input
+					type="text"
+					name={name}
+					className={inputClass}
+					value={value}
+					onChange={ev => {
+						// 変更させない
 					}}
-				>
-					<i className="fas fa-calendar-alt" />
+					readOnly={true}
+				/>
+				<div className="input-group-append">
+					<div
+						className="input-group-text"
+						onClick={ev => {
+							onClick(date, ev);
+						}}
+					>
+						<i className="fas fa-calendar-alt" />
+					</div>
 				</div>
 			</div>
-		</div>
-	);
-};
+		);
+	}
+}
