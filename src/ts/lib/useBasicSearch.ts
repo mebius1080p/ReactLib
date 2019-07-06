@@ -19,6 +19,10 @@ const initialPageObj: IPaging = {
 	totalpage: 1
 };
 
+interface IPageForSS {
+	page: number;
+}
+
 /**
  * 検索機能をまとめたカスタム hook
  * @param sskey session storage のキー
@@ -34,12 +38,19 @@ export function useBasicSearch<T extends TKeyValue, R>(
 	) => Promise<IPaging & { data: R[] }>
 ) {
 	const ssm = new SSManager(sskey);
+	const ssmPage = new SSManager(sskey + "_page");
 	let applyCondition: T = { ...initialCondition };
+	const applyPageObj: IPaging = { ...initialPageObj };
 	if (ssm.CanUseSS) {
 		const storedConditionString = ssm.restore();
 		if (storedConditionString !== "") {
 			const storedCondition: T = JSON.parse(storedConditionString);
 			applyCondition = { ...storedCondition };
+		}
+		const storedPageString = ssmPage.restore();
+		if (storedPageString !== "") {
+			const storedPage: IPageForSS = JSON.parse(storedPageString);
+			applyPageObj.page = storedPage.page;
 		}
 	}
 
@@ -76,9 +87,9 @@ export function useBasicSearch<T extends TKeyValue, R>(
 		}
 	};
 
-	const [pageObj, setPageobj] = React.useState<IPaging>({
-		...initialPageObj
-	});
+	const [pageObj, setPageobj] = React.useState<IPaging>(
+		JSON.parse(JSON.stringify({ ...applyPageObj }))
+	);
 
 	const [records, setRecords] = React.useState<R[]>([]);
 	const handleSearch = async (ev: React.MouseEvent | null) => {
@@ -87,22 +98,26 @@ export function useBasicSearch<T extends TKeyValue, R>(
 			const stringCondition = JSON.stringify(condition);
 			ssm.save(stringCondition);
 		}
-		try {
-			const response = await searchFunction(condition, pageObj.page);
-			const { data, ...rest } = response;
-			setRecords(data);
-			setPageobj(rest);
-		} catch (error) {
-			console.dir(error);
-		}
+		searchFunctionEntity(condition, pageObj.page);
 	};
 	const handleReset = (ev: React.MouseEvent) => {
 		setCondition(JSON.parse(JSON.stringify(initialCondition)));
 	};
 	const handleClickPage = async (ev: React.MouseEvent, page: number) => {
+		searchFunctionEntity(condition, page);
+	};
+
+	const searchFunctionEntity = async (searchCondition: T, page: number) => {
 		try {
-			const response = await searchFunction(condition, page);
+			const response = await searchFunction(searchCondition, page);
 			const { data, ...rest } = response;
+			if (ssmPage.CanUseSS) {
+				// ページ数に関してはサーバーからのレスポンスが正しいので、これを保存
+				const pageForSS: IPageForSS = {
+					page: rest.page
+				};
+				ssmPage.save(JSON.stringify(pageForSS));
+			}
 			setRecords(data);
 			setPageobj(rest);
 		} catch (error) {
