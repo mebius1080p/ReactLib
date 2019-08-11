@@ -1,16 +1,16 @@
 import * as React from "react";
 import { HogeAPI } from "./HogeAPI";
 import { Paging2 } from "../lib/Paging2";
-import { useBasicSearch } from "../lib/useBasicSearch";
+import { useBasicSearch, TConditionValue } from "../lib/useBasicSearch";
 
 interface ISearchWithHookProps {}
 
-export type ISearchWithHookCondition = {
-	[str: string]: string | string[];
+export interface ISearchWithHookCondition
+	extends Record<string, TConditionValue> {
 	cond1: string;
 	cond2: string;
-	forcheck: string[];
-};
+	forcheck: number[];
+}
 
 export interface IRecord {
 	hoge: string;
@@ -73,9 +73,9 @@ export const SearchWithHook: React.StatelessComponent<ISearchWithHookProps> = (
 					<input
 						type="checkbox"
 						name="forcheck"
-						value="abc"
+						value="1"
 						checked={condition.forcheck.some(c => {
-							return c === "abc";
+							return c === 1;
 						})}
 						onChange={ev => {
 							handleChangeInput(ev, true);
@@ -85,9 +85,9 @@ export const SearchWithHook: React.StatelessComponent<ISearchWithHookProps> = (
 					<input
 						type="checkbox"
 						name="forcheck"
-						value="xyz"
+						value="2"
 						checked={condition.forcheck.some(c => {
-							return c === "xyz";
+							return c === 2;
 						})}
 						onChange={ev => {
 							handleChangeInput(ev, true);

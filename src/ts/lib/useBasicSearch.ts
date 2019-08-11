@@ -2,9 +2,8 @@ import * as React from "react";
 import { IPaging } from "./Paging2";
 import { SSManager } from "./SSManager";
 
-export type TKeyValue = {
-	[str: string]: string | string[] | number;
-};
+export type TConditionValue = string | number | number[];
+
 export interface IFakeEvent {
 	target: {
 		name: string;
@@ -23,19 +22,31 @@ interface IPageForSS {
 	page: number;
 }
 
+interface IChangeableItem {
+	name: string;
+	value: TConditionValue;
+}
+
+type TChangeableItemsFunction = (name: string) => IChangeableItem[];
+
 /**
  * 検索機能をまとめたカスタム hook
+ * チェックボックス系の value は数値配列であると見なす……
  * @param sskey session storage のキー
  * @param initialCondition 初期条件オブジェクト
  * @param searchFunction 検索関数
+ * @param makeChangeableItems ある select を変更すると、別の select が変わる、というような場合のための関数
  */
-export function useBasicSearch<T extends TKeyValue, R>(
+export function useBasicSearch<T extends Record<string, TConditionValue>, R>(
 	sskey: string,
 	initialCondition: T,
 	searchFunction: (
 		condition: T,
 		page: number
-	) => Promise<IPaging & { data: R[] }>
+	) => Promise<IPaging & { data: R[] }>,
+	makeChangeableItems: TChangeableItemsFunction = (name: string) => {
+		return [];
+	}
 ) {
 	const ssm = new SSManager(sskey);
 	const ssmPage = new SSManager(sskey + "_page");
@@ -54,14 +65,22 @@ export function useBasicSearch<T extends TKeyValue, R>(
 		}
 	}
 
-	// 配列やオブジェクトがなければスプレッド演算子でもよい
+	// hook
+	// リセットがあるのでクローンしてから設定
 	const [condition, setCondition] = React.useState<T>(
 		JSON.parse(JSON.stringify({ ...applyCondition }))
 	);
+	const [pageObj, setPageobj] = React.useState<IPaging>(
+		JSON.parse(JSON.stringify({ ...applyPageObj }))
+	);
+	const [records, setRecords] = React.useState<R[]>([]);
 
+	// handler
 	const handleChangeInput = (
 		ev:
-			| React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+			| React.ChangeEvent<
+					HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+			  >
 			| IFakeEvent,
 		isCheckbox: boolean = false
 	) => {
@@ -72,26 +91,54 @@ export function useBasicSearch<T extends TKeyValue, R>(
 				if (!Array.isArray(currentValues)) {
 					return;
 				}
-				const targetIndex = currentValues.indexOf(value);
+				// string[] も認めるとなると、currentValues.length === 0 のときにどちらにすべきか決定できなくなる……
+				// handleChangeInput の引数でどちらの方なのかを指定する方法もあり
+				const numValue = Number(value);
+				if (isNaN(numValue)) {
+					return;
+				}
+				const targetIndex = currentValues.indexOf(numValue);
 				if (targetIndex === -1) {
-					currentValues.push(value);
+					currentValues.push(numValue);
 				} else {
 					const removed = currentValues.splice(targetIndex, 1);
 				}
-				(condition as TKeyValue)[name] = [...currentValues];
+				(condition as Record<string, number[]>)[name] = [
+					...currentValues
+				];
+				const changeableItems = makeChangeableItems(name);
+				changeableItems.forEach(item => {
+					if (item.name in condition) {
+						// 型は一致していると見なすので makeChangeableItems は注意して実装する
+						(condition[item.name] as TConditionValue) = item.value;
+					}
+				});
 				setCondition({ ...condition });
 			} else {
-				(condition as TKeyValue)[name] = value;
+				const currentValue = condition[name];
+				switch (typeof currentValue) {
+					case "string":
+						(condition as Record<string, string>)[name] = value;
+						break;
+					case "number":
+						const numValue = Number(value);
+						if (isNaN(numValue)) {
+							break;
+						}
+						(condition as Record<string, number>)[name] = numValue;
+						break;
+				}
+				const changeableItems = makeChangeableItems(name);
+				changeableItems.forEach(item => {
+					if (item.name in condition) {
+						// 型は一致していると見なすので makeChangeableItems は注意して実装する
+						(condition[item.name] as TConditionValue) = item.value;
+					}
+				});
 				setCondition({ ...condition });
 			}
 		}
 	};
-
-	const [pageObj, setPageobj] = React.useState<IPaging>(
-		JSON.parse(JSON.stringify({ ...applyPageObj }))
-	);
-
-	const [records, setRecords] = React.useState<R[]>([]);
 	const handleSearch = async (ev: React.MouseEvent | null) => {
 		// 検索とか
 		if (ssm.CanUseSS) {
@@ -124,8 +171,6 @@ export function useBasicSearch<T extends TKeyValue, R>(
 			console.dir(error);
 		}
 	};
-
-	// @todo ある select を変更すると、別の select が変わる、というような場合 xxxxxxxxxxx
 
 	// 自動検索
 	React.useEffect(() => {
