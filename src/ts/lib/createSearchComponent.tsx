@@ -30,8 +30,6 @@ interface IFakeTarget {
 	value: any;
 }
 
-
-
 type TCondition = {
 	[str: string]: any;
 };
@@ -46,11 +44,7 @@ type TCondition = {
  * @param ssm セッションストレージマネージャー オプション扱い
  * @param other 検索条件ではないが、追加のオブジェクトなど (select に使うリストなど)
  */
-export default function createSearchComponent<
-	T extends TCondition,
-	S,
-	U = {}
->(
+export default function createSearchComponent<T extends TCondition, S, U = {}>(
 	WrappedComponent: React.ComponentType<
 		IInjectedProps<T, U> & {
 			condProps: T;
@@ -64,14 +58,16 @@ export default function createSearchComponent<
 	ssm: SSManager | null = null,
 	other?: U
 ) {
-	interface IHOCState {
-		paging: IPaging;
-		condition: T;
-		records: S[];
-		other?: U;
-	}
 	objAssign();
-	return class extends React.Component<any, IHOCState> {
+	return class extends React.Component<
+		any,
+		{
+			paging: IPaging;
+			condition: T;
+			records: S[];
+			other?: U;
+		}
+	> {
 		constructor(props: any) {
 			super(props);
 			// T は中身が階層化していない型であること
@@ -105,7 +101,7 @@ export default function createSearchComponent<
 		/**
 		 * search 検索メソッド
 		 */
-		private async search(condition: T, page: number): Promise<void> {
+		public async search(condition: T, page: number): Promise<void> {
 			try {
 				const result = await searchAPI(condition, page);
 				this.setState({
