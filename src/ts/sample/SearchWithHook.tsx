@@ -20,7 +20,7 @@ export interface IRecord {
 const initialCondition: ISearchWithHookCondition = {
 	cond1: "",
 	cond2: "",
-	forcheck: []
+	forcheck: [],
 };
 
 /**
@@ -37,7 +37,7 @@ export const SearchWithHook: React.StatelessComponent<ISearchWithHookProps> = (
 		handleClickPage,
 		condition,
 		pageObj,
-		records
+		records,
 	} = useBasicSearch<ISearchWithHookCondition, IRecord>(
 		"searchwithhook",
 		initialCondition,
@@ -74,10 +74,10 @@ export const SearchWithHook: React.StatelessComponent<ISearchWithHookProps> = (
 						type="checkbox"
 						name="forcheck"
 						value="1"
-						checked={condition.forcheck.some(c => {
+						checked={condition.forcheck.some((c) => {
 							return c === 1;
 						})}
-						onChange={ev => {
+						onChange={(ev) => {
 							handleChangeInput(ev, true);
 						}}
 					/>
@@ -86,10 +86,10 @@ export const SearchWithHook: React.StatelessComponent<ISearchWithHookProps> = (
 						type="checkbox"
 						name="forcheck"
 						value="2"
-						checked={condition.forcheck.some(c => {
+						checked={condition.forcheck.some((c) => {
 							return c === 2;
 						})}
-						onChange={ev => {
+						onChange={(ev) => {
 							handleChangeInput(ev, true);
 						}}
 					/>

@@ -11,24 +11,28 @@ module.exports = ({ config, mode }) => {
 				loader: "thread-loader",
 				options: {
 					// there should be 1 cpu for the fork-ts-checker-webpack-plugin
-					workers: require("os").cpus().length - 1
-				}
+					workers: require("os").cpus().length - 1,
+				},
 			},
 			{
 				loader: "ts-loader",
 				options: {
-					happyPackMode: true // IMPORTANT! use happyPackMode mode to speed-up compilation and reduce errors reported to webpack
-				}
+					happyPackMode: true, // IMPORTANT! use happyPackMode mode to speed-up compilation and reduce errors reported to webpack
+				},
 			},
 			{
-				loader: "react-docgen-typescript-loader"
-			}
-		]
+				loader: "react-docgen-typescript-loader",
+			},
+		],
 	});
 	config.resolve.extensions.push(".ts", ".tsx");
 	config.plugins.push(
 		new ForkTsCheckerWebpackPlugin({
-			checkSyntacticErrors: true
+			typescript: {
+				diagnosticsOptions: {
+					syntactic: true,
+				},
+			},
 		})
 	);
 	config.optimization.minimizer.push(
