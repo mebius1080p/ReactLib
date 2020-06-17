@@ -4,14 +4,14 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
 	entry: {
-		"sample/index": "./src/ts/sample/index.tsx"
+		"sample/index": "./src/ts/sample/index.tsx",
 	},
 	output: {
 		path: path.resolve(__dirname, "www"),
-		filename: "[name].js"
+		filename: "[name].js",
 	},
 	resolve: {
-		extensions: [".ts", ".tsx", ".js"]
+		extensions: [".ts", ".tsx", ".js"],
 	},
 	module: {
 		rules: [
@@ -23,33 +23,35 @@ module.exports = {
 						loader: "thread-loader",
 						options: {
 							// there should be 1 cpu for the fork-ts-checker-webpack-plugin
-							workers: require("os").cpus().length - 1
-						}
+							workers: require("os").cpus().length - 1,
+						},
 					},
 					{
 						loader: "ts-loader",
 						options: {
-							happyPackMode: true // IMPORTANT! use happyPackMode mode to speed-up compilation and reduce errors reported to webpack
-						}
-					}
-				]
+							happyPackMode: true, // IMPORTANT! use happyPackMode mode to speed-up compilation and reduce errors reported to webpack
+						},
+					},
+				],
 			},
 			{
 				test: /\.(js)$/,
 				loader: "babel-loader",
 				exclude: "/node_modules",
 				options: {
-					cacheDirectory: true
-				}
-			}
-		]
+					cacheDirectory: true,
+				},
+			},
+		],
 	},
 	plugins: [
 		new ForkTsCheckerWebpackPlugin({
-			checkSyntacticErrors: true
-			// workers: ForkTsCheckerWebpackPlugin.TWO_CPUS_FREE,
-			// useTypescriptIncrementalApi: false
-		})
+			typescript: {
+				diagnosticsOptions: {
+					syntactic: true,
+				},
+			},
+		}),
 	],
 	optimization: {
 		minimizer: [new TerserPlugin({ cache: true, parallel: true })],
@@ -58,16 +60,16 @@ module.exports = {
 				vendor: {
 					test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
 					name: "js/react",
-					chunks: "all"
-				}
-			}
-		}
+					chunks: "all",
+				},
+			},
+		},
 	},
 	devServer: {
 		contentBase: path.join(__dirname, "www"),
 		progress: true,
-		historyApiFallback: true
+		historyApiFallback: true,
 	},
 	// mode: "development",
-	mode: "production"
+	mode: "production",
 };
