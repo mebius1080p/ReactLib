@@ -34,7 +34,7 @@ export const InputDate: React.StatelessComponent<IInputDateProps> = (
 		handleChangeInput,
 		size = "",
 		extraClass = "",
-		dateFormat = "yyyy-MM-dd"
+		dateFormat = "yyyy-MM-dd",
 	} = props;
 
 	let date: Date | null = null;
@@ -60,7 +60,7 @@ export const InputDate: React.StatelessComponent<IInputDateProps> = (
 			locale="ja"
 			onChange={(date, event) => {
 				let dateString = "";
-				if (date !== null) {
+				if (date instanceof Date) {
 					dateString = format(date, "yyyy-MM-dd");
 				}
 				handleChangeInput(event, name, dateString);
@@ -100,7 +100,7 @@ class InputDateClassVersion extends React.Component<
 			onClick = (
 				date: Date | null,
 				ev: React.SyntheticEvent<any, Event>
-			) => {}
+			) => {},
 		} = this.props;
 
 		const sizeClass = size === "" ? "" : `form-control-${size}`;
@@ -118,7 +118,7 @@ class InputDateClassVersion extends React.Component<
 					name={name}
 					className={inputClass}
 					value={value}
-					onChange={ev => {
+					onChange={(ev) => {
 						// 変更させない
 					}}
 					readOnly={true}
@@ -126,7 +126,7 @@ class InputDateClassVersion extends React.Component<
 				<div className="input-group-append">
 					<div
 						className="input-group-text"
-						onClick={ev => {
+						onClick={(ev) => {
 							onClick(date, ev);
 						}}
 					>
