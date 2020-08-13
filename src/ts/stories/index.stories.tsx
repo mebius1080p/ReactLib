@@ -15,7 +15,7 @@ stories.add(
 		const name = text("Name", "ボタン名", groupid);
 		const defaultAttr: IHogeAttr = {
 			type: "button",
-			cls: "sample-class"
+			cls: "sample-class",
 		};
 		const attr = object("obj_test", defaultAttr, groupid);
 		const onClickHandler = (ev: React.MouseEvent) => {
