@@ -38,7 +38,7 @@ interface IDicObj {
 	cls: string;
 }
 
-export const SimpleCommitModal: React.StatelessComponent<
+export const SimpleCommitModal: React.FunctionComponent<
 	ISimpleCommitModalProps
 > = (props: ISimpleCommitModalProps) => {
 	const { type, handleYes, handleClose, handleThanks } = props;

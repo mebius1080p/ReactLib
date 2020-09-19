@@ -36,7 +36,7 @@ stories.add(
 
 interface ISelectableDateInputProps {}
 
-const SelectableDateInput: React.StatelessComponent<
+const SelectableDateInput: React.FunctionComponent<
 	ISelectableDateInputProps
 > = (props: ISelectableDateInputProps) => {
 	const [value, setValue] = React.useState<string>("");

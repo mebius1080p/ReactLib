@@ -10,7 +10,7 @@ interface INl2brProps {
  * es6 のテンプレートリテラルの改行は \n な模様
  * @param props props
  */
-export const Nl2br: React.StatelessComponent<INl2brProps> = (
+export const Nl2br: React.FunctionComponent<INl2brProps> = (
 	props: INl2brProps
 ) => {
 	const reCRLF = new RegExp("\n");

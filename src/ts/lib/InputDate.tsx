@@ -25,7 +25,7 @@ type TBS4Size = "xs" | "sm" | "md" | "lg" | "xl" | "";
  * bootstrap4 対応日付選択コンポーネント
  * @param props props
  */
-export const InputDate: React.StatelessComponent<IInputDateProps> = (
+export const InputDate: React.FunctionComponent<IInputDateProps> = (
 	props: IInputDateProps
 ) => {
 	const {

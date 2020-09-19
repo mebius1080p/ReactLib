@@ -8,7 +8,7 @@ interface IPriceFormatterProps {
 // コンポーネントの外に出しておけばキャッシュがきく
 const formatter: Intl.NumberFormat = new Intl.NumberFormat("ja-JP");
 
-export const PriceFormatter: React.StatelessComponent<IPriceFormatterProps> = (
+export const PriceFormatter: React.FunctionComponent<IPriceFormatterProps> = (
 	props: IPriceFormatterProps
 ) => {
 	const { price } = props;

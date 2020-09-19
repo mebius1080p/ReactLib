@@ -27,7 +27,7 @@ const initialCondition: ISearchWithHookCondition = {
  * hook で作成した検索コンポーネントのサンプル
  * @param props props
  */
-export const SearchWithHook: React.StatelessComponent<ISearchWithHookProps> = (
+export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 	props: ISearchWithHookProps
 ) => {
 	const {

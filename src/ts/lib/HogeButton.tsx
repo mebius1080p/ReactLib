@@ -14,7 +14,7 @@ export interface IHogeAttr {
 	cls: string;
 }
 
-export const HogeButton: React.StatelessComponent<IHogeButtonProps> = (
+export const HogeButton: React.FunctionComponent<IHogeButtonProps> = (
 	props: IHogeButtonProps
 ) => {
 	const { str, attr, onClickHandler } = props;

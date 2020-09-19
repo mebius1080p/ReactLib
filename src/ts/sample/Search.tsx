@@ -25,7 +25,7 @@ interface ISearchProps extends IInjectedProps<IConditionHoge, IOther> {
  * @deprecated
  * @param props props
  */
-export const Search: React.StatelessComponent<ISearchProps> = (
+export const Search: React.FunctionComponent<ISearchProps> = (
 	props: ISearchProps
 ) => {
 	const {

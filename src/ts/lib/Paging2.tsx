@@ -15,7 +15,7 @@ export interface IPaging {
 	totalpage: number;
 }
 
-export const Paging2: React.StatelessComponent<IPaging2Props> = (
+export const Paging2: React.FunctionComponent<IPaging2Props> = (
 	props: IPaging2Props
 ) => {
 	const { params, handleClickPage } = props;
