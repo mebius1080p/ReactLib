@@ -4,10 +4,11 @@
 - React component library
 
 ## feature
-- React 16.8
+- React 17
+- webpack 5
 - build optimization
 - code splitting
 - storybook
 - dev server
 - jest
-- fork-ts-checker v1
+- fork-ts-checker
