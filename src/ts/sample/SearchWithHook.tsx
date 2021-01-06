@@ -35,6 +35,7 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 		handleSearch,
 		handleReset,
 		handleClickPage,
+		enterSearch,
 		condition,
 		pageObj,
 		records,
@@ -55,6 +56,7 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 						name="cond1"
 						value={condition.cond1}
 						onChange={handleChangeInput}
+						onKeyDown={enterSearch}
 						className="form-control"
 					/>
 				</div>
@@ -65,6 +67,7 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 						name="cond2"
 						value={condition.cond2}
 						onChange={handleChangeInput}
+						onKeyDown={enterSearch}
 						className="form-control"
 					/>
 				</div>
