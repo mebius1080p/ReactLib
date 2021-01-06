@@ -15,7 +15,7 @@ const initialPageObj: IPaging = {
 	total: 0,
 	page: 1,
 	perpage: 10,
-	totalpage: 1
+	totalpage: 1,
 };
 
 interface IPageForSS {
@@ -104,10 +104,10 @@ export function useBasicSearch<T extends Record<string, TConditionValue>, R>(
 					const removed = currentValues.splice(targetIndex, 1);
 				}
 				(condition as Record<string, number[]>)[name] = [
-					...currentValues
+					...currentValues,
 				];
 				const changeableItems = makeChangeableItems(name);
-				changeableItems.forEach(item => {
+				changeableItems.forEach((item) => {
 					if (item.name in condition) {
 						// 型は一致していると見なすので makeChangeableItems は注意して実装する
 						(condition[item.name] as TConditionValue) = item.value;
@@ -129,7 +129,7 @@ export function useBasicSearch<T extends Record<string, TConditionValue>, R>(
 						break;
 				}
 				const changeableItems = makeChangeableItems(name);
-				changeableItems.forEach(item => {
+				changeableItems.forEach((item) => {
 					if (item.name in condition) {
 						// 型は一致していると見なすので makeChangeableItems は注意して実装する
 						(condition[item.name] as TConditionValue) = item.value;
@@ -161,7 +161,7 @@ export function useBasicSearch<T extends Record<string, TConditionValue>, R>(
 			if (ssmPage.CanUseSS) {
 				// ページ数に関してはサーバーからのレスポンスが正しいので、これを保存
 				const pageForSS: IPageForSS = {
-					page: rest.page
+					page: rest.page,
 				};
 				ssmPage.save(JSON.stringify(pageForSS));
 			}
@@ -169,6 +169,14 @@ export function useBasicSearch<T extends Record<string, TConditionValue>, R>(
 			setPageobj(rest);
 		} catch (error) {
 			console.dir(error);
+		}
+	};
+
+	const enterSearch = (
+		ev: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>
+	) => {
+		if (ev.ctrlKey && ev.key === "Enter") {
+			handleSearch(null);
 		}
 	};
 
@@ -182,8 +190,9 @@ export function useBasicSearch<T extends Record<string, TConditionValue>, R>(
 		handleSearch,
 		handleReset,
 		handleClickPage,
+		enterSearch,
 		condition,
 		pageObj,
-		records
+		records,
 	};
 }
