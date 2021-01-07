@@ -2,6 +2,7 @@ import * as React from "react";
 import { HogeAPI } from "./HogeAPI";
 import { Paging2 } from "../lib/Paging2";
 import { useBasicSearch, TConditionValue } from "../lib/useBasicSearch";
+import { SearchButtons } from "../lib/SearchButtons";
 
 interface ISearchWithHookProps {}
 
@@ -46,73 +47,65 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 	);
 
 	return (
-		<div className="p-3">
-			<div>
-				<div>search</div>
-				<div>
-					条件1 :{" "}
-					<input
-						type="text"
-						name="cond1"
-						value={condition.cond1}
-						onChange={handleChangeInput}
-						onKeyDown={enterSearch}
-						className="form-control"
-					/>
+		<div className="container">
+			<div className="card border-dark mb-3">
+				<div className="card-header px-2 py-1 text-white bg-primary">
+					<i className="fas fa-search" /> 検索部
 				</div>
-				<div>
-					条件2 :{" "}
-					<input
-						type="text"
-						name="cond2"
-						value={condition.cond2}
-						onChange={handleChangeInput}
-						onKeyDown={enterSearch}
-						className="form-control"
+				<div className="card-body px-3 py-2 mb-3">
+					<div className="form-inline">
+						条件1 :{" "}
+						<input
+							type="text"
+							name="cond1"
+							value={condition.cond1}
+							onChange={handleChangeInput}
+							onKeyDown={enterSearch}
+							className="form-control form-control-sm"
+						/>
+					</div>
+					<div className="form-inline">
+						条件2 :{" "}
+						<input
+							type="text"
+							name="cond2"
+							value={condition.cond2}
+							onChange={handleChangeInput}
+							onKeyDown={enterSearch}
+							className="form-control form-control-sm"
+						/>
+					</div>
+					<div>
+						条件3 :{" "}
+						<input
+							type="checkbox"
+							name="forcheck"
+							value="1"
+							checked={condition.forcheck.some((c) => {
+								return c === 1;
+							})}
+							onChange={(ev) => {
+								handleChangeInput(ev, true);
+							}}
+						/>
+						ABC
+						<input
+							type="checkbox"
+							name="forcheck"
+							value="2"
+							checked={condition.forcheck.some((c) => {
+								return c === 2;
+							})}
+							onChange={(ev) => {
+								handleChangeInput(ev, true);
+							}}
+						/>
+						XYZ
+					</div>
+					<SearchButtons
+						handleReset={handleReset}
+						handleSearch={handleSearch}
 					/>
-				</div>
-				<div>
-					条件3 :{" "}
-					<input
-						type="checkbox"
-						name="forcheck"
-						value="1"
-						checked={condition.forcheck.some((c) => {
-							return c === 1;
-						})}
-						onChange={(ev) => {
-							handleChangeInput(ev, true);
-						}}
-					/>
-					ABC
-					<input
-						type="checkbox"
-						name="forcheck"
-						value="2"
-						checked={condition.forcheck.some((c) => {
-							return c === 2;
-						})}
-						onChange={(ev) => {
-							handleChangeInput(ev, true);
-						}}
-					/>
-					XYZ
-				</div>
-				<div>
-					<button
-						type="button"
-						className="btn btn-secondary"
-						onClick={handleSearch}
-					>
-						検索
-					</button>
-					<button
-						type="button"
-						className="btn btn-secondary"
-						onClick={handleReset}
-					>
-						リセット
-					</button>
 				</div>
 			</div>
 			<div>
