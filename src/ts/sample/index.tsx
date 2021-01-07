@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { App } from "./App";
+import { SearchWithHook } from "./SearchWithHook";
 
 "use strict";
 document.addEventListener(
@@ -13,7 +13,9 @@ document.addEventListener(
 		}
 		ReactDOM.render(
 			<React.StrictMode>
-				<App />
+				<div className="container">
+					<SearchWithHook />
+				</div>
 			</React.StrictMode>,
 			appElm
 		);

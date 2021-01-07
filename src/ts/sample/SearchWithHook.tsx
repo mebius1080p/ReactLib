@@ -4,6 +4,7 @@ import { Paging2 } from "../lib/Paging2";
 import { useBasicSearch, TConditionValue } from "../lib/useBasicSearch";
 import { SearchButtons } from "../lib/SearchButtons";
 import { DetailPageButtons } from "../lib/DetailPageButtons";
+import { AddNew } from "../lib/AddNew";
 
 interface ISearchWithHookProps {}
 
@@ -53,9 +54,19 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 	const handleCommit = () => {
 		console.log("commit!");
 	};
+	const handleClickDetail = (ev: React.MouseEvent<HTMLButtonElement>) => {
+		console.log("detail!");
+	};
 
 	return (
-		<div className="container">
+		<div>
+			<div className="d-flex">
+				<h4>
+					<i className="fas fa-search" />
+					xxx検索
+				</h4>
+				<AddNew handleClickDetail={handleClickDetail} />
+			</div>
 			<div className="card border-dark mb-3">
 				<div className="card-header px-2 py-1 text-white bg-primary">
 					<i className="fas fa-search" /> 検索部

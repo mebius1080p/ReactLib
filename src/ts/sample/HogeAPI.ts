@@ -1,6 +1,14 @@
 import { IPaging } from "../lib/Paging2";
-import { IAbc, IConditionHoge } from "./Search";
 import { IRecord, ISearchWithHookCondition } from "./SearchWithHook";
+
+export interface IAbc {
+	dd: string;
+}
+
+export interface IConditionHoge {
+	abc: string;
+	from_x: string;
+}
 
 export class HogeAPI {
 	public static async search(
@@ -12,7 +20,7 @@ export class HogeAPI {
 			page: 1,
 			perpage: 1,
 			totalpage: 1,
-			data: []
+			data: [],
 		};
 	}
 	/**
@@ -29,27 +37,27 @@ export class HogeAPI {
 		const data = [
 			{
 				hoge: "aa",
-				fuga: "AA"
+				fuga: "AA",
 			},
 			{
 				hoge: "bb",
-				fuga: "BB"
+				fuga: "BB",
 			},
 			{
 				hoge: "cc",
-				fuga: "CC"
+				fuga: "CC",
 			},
 			{
 				hoge: "dd",
-				fuga: "DD"
-			}
+				fuga: "DD",
+			},
 		];
 		return {
 			total: 10,
 			page: 1,
 			perpage: 4,
 			totalpage: 3,
-			data
+			data,
 		};
 	}
 }
