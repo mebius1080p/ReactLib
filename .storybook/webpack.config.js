@@ -36,7 +36,7 @@ module.exports = ({ config, mode }) => {
 		})
 	);
 	config.optimization.minimizer.push(
-		new TerserPlugin({ cache: true, parallel: true })
+		new TerserPlugin({ parallel: true })
 	);
 	return config;
 };
