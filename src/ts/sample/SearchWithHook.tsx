@@ -3,6 +3,7 @@ import { HogeAPI } from "./HogeAPI";
 import { Paging2 } from "../lib/Paging2";
 import { useBasicSearch, TConditionValue } from "../lib/useBasicSearch";
 import { SearchButtons } from "../lib/SearchButtons";
+import { DetailPageButtons } from "../lib/DetailPageButtons";
 
 interface ISearchWithHookProps {}
 
@@ -45,6 +46,13 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 		initialCondition,
 		HogeAPI.search2
 	);
+
+	const handleBack = () => {
+		console.log("back!");
+	};
+	const handleCommit = () => {
+		console.log("commit!");
+	};
 
 	return (
 		<div className="container">
@@ -130,6 +138,12 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 						})}
 					</tbody>
 				</table>
+			</div>
+			<div>
+				<DetailPageButtons
+					handleBack={handleBack}
+					handleCommit={handleCommit}
+				/>
 			</div>
 		</div>
 	);
