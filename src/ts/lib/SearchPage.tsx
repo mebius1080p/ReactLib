@@ -41,7 +41,7 @@ export interface IListPanelProps<R> {
 	handleClickDetail: (ev: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-//functional component に片引き数を渡すには、function で定義するのが肝！！！
+//functional component に型引き数を渡すには、function で定義するのが肝！！！
 export function SearchPage<
 	C extends Record<string, TConditionValue>,
 	R extends Record<string, TRecord>
