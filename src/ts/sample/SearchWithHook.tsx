@@ -1,10 +1,17 @@
 import * as React from "react";
 import { HogeAPI } from "./HogeAPI";
 import { Paging2 } from "../lib/Paging2";
-import { useBasicSearch, TConditionValue } from "../lib/useBasicSearch";
+import {
+	useBasicSearch,
+	TConditionValue,
+	TRecord,
+} from "../lib/useBasicSearch";
 import { SearchButtons } from "../lib/SearchButtons";
 import { DetailPageButtons } from "../lib/DetailPageButtons";
 import { AddNew } from "../lib/AddNew";
+import { SearchPage } from "../lib/SearchPage";
+import { SamplePanel } from "./SamplePanel";
+import { SampleList } from "./SampleList";
 
 interface ISearchWithHookProps {}
 
@@ -15,7 +22,7 @@ export interface ISearchWithHookCondition
 	forcheck: number[];
 }
 
-export interface IRecord {
+export interface IRecord extends Record<string, TRecord> {
 	hoge: string;
 	fuga: string;
 }
@@ -154,6 +161,18 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 				<DetailPageButtons
 					handleBack={handleBack}
 					handleCommit={handleCommit}
+				/>
+			</div>
+			<div>
+				<SearchPage<ISearchWithHookCondition, IRecord>
+					title="サンプル"
+					ConditionPanel={SamplePanel}
+					initialCondition={initialCondition}
+					searchFunction={HogeAPI.search2}
+					Listpanel={SampleList}
+					handleClickDetail={() => {
+						console.log("detail!");
+					}}
 				/>
 			</div>
 		</div>

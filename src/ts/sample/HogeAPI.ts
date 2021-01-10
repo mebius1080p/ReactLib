@@ -1,11 +1,12 @@
 import { IPaging } from "../lib/Paging2";
+import { TConditionValue } from "../lib/useBasicSearch";
 import { IRecord, ISearchWithHookCondition } from "./SearchWithHook";
 
 export interface IAbc {
 	dd: string;
 }
 
-export interface IConditionHoge {
+export interface IConditionHoge extends Record<string, TConditionValue> {
 	abc: string;
 	from_x: string;
 }
