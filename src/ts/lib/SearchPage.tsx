@@ -4,25 +4,28 @@ import { IPaging, Paging2 } from "./Paging2";
 import { SearchButtons } from "./SearchButtons";
 import {
 	IFakeEvent,
+	TChangeableItemsFunction,
 	TConditionValue,
-	TRecord,
 	useBasicSearch,
 } from "./useBasicSearch";
 
-interface ISearchPageProps<C, R> {
+interface ISearchPageProps<C, R, E> {
 	title: string;
-	ConditionPanel: React.FunctionComponent<IConditionPanelProps<C>>;
+	ConditionPanel: React.FunctionComponent<IConditionPanelProps<C, E>>;
 	initialCondition: C;
+	extraParam: E;
 	searchFunction: (
 		condition: C,
 		page: number
 	) => Promise<IPaging & { data: R[] }>;
 	Listpanel: React.FunctionComponent<IListPanelProps<R>>;
 	handleClickDetail: (ev: React.MouseEvent<HTMLButtonElement>) => void;
+	makeChangeableItems?: TChangeableItemsFunction;
 }
 
-export interface IConditionPanelProps<C> {
+export interface IConditionPanelProps<C, E> {
 	condition: C;
+	extraParam: E;
 	handleChangeInput: (
 		ev:
 			| React.ChangeEvent<
@@ -37,22 +40,25 @@ export interface IConditionPanelProps<C> {
 }
 
 export interface IListPanelProps<R> {
-	record: R[];
+	records: R[];
 	handleClickDetail: (ev: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 //functional component に型引き数を渡すには、function で定義するのが肝！！！
-export function SearchPage<
-	C extends Record<string, TConditionValue>,
-	R extends Record<string, TRecord>
->(props: ISearchPageProps<C, R>): React.ReactElement {
+export function SearchPage<C extends Record<string, TConditionValue>, R, E>(
+	props: ISearchPageProps<C, R, E>
+): React.ReactElement {
 	const {
 		title,
 		ConditionPanel,
 		initialCondition,
 		Listpanel,
+		extraParam,
 		searchFunction,
 		handleClickDetail,
+		makeChangeableItems = (name: string) => {
+			return [];
+		},
 	} = props;
 
 	const {
@@ -67,7 +73,8 @@ export function SearchPage<
 	} = useBasicSearch<C, R>(
 		"searchwithhook",
 		initialCondition,
-		searchFunction
+		searchFunction,
+		makeChangeableItems
 	);
 
 	return (
@@ -86,6 +93,7 @@ export function SearchPage<
 				<div className="card-body px-3 py-2 mb-3">
 					<ConditionPanel
 						condition={condition}
+						extraParam={extraParam}
 						handleChangeInput={handleChangeInput}
 						enterSearch={enterSearch}
 					/>
@@ -101,7 +109,7 @@ export function SearchPage<
 			<div>
 				<table className="table table-striped table-bordered table-sm">
 					<Listpanel
-						record={records}
+						records={records}
 						handleClickDetail={handleClickDetail}
 					/>
 				</table>

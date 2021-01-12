@@ -3,7 +3,6 @@ import { IPaging } from "./Paging2";
 import { SSManager } from "./SSManager";
 
 export type TConditionValue = string | number | number[];
-export type TRecord = string | number;
 
 export interface IFakeEvent {
 	target: {
@@ -28,7 +27,7 @@ interface IChangeableItem {
 	value: TConditionValue;
 }
 
-type TChangeableItemsFunction = (name: string) => IChangeableItem[];
+export type TChangeableItemsFunction = (name: string) => IChangeableItem[];
 
 /**
  * 検索機能をまとめたカスタム hook

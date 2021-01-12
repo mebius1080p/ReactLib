@@ -4,7 +4,6 @@ import { Paging2 } from "../lib/Paging2";
 import {
 	useBasicSearch,
 	TConditionValue,
-	TRecord,
 } from "../lib/useBasicSearch";
 import { SearchButtons } from "../lib/SearchButtons";
 import { DetailPageButtons } from "../lib/DetailPageButtons";
@@ -22,7 +21,7 @@ export interface ISearchWithHookCondition
 	forcheck: number[];
 }
 
-export interface IRecord extends Record<string, TRecord> {
+export interface IRecord extends Record<string, string> {
 	hoge: string;
 	fuga: string;
 }
@@ -164,10 +163,11 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 				/>
 			</div>
 			<div>
-				<SearchPage<ISearchWithHookCondition, IRecord>
+				<SearchPage<ISearchWithHookCondition, IRecord, any>
 					title="サンプル"
 					ConditionPanel={SamplePanel}
 					initialCondition={initialCondition}
+					extraParam={{}}
 					searchFunction={HogeAPI.search2}
 					Listpanel={SampleList}
 					handleClickDetail={() => {

@@ -3,8 +3,9 @@ import { IConditionPanelProps } from "../lib/SearchPage";
 import { ISearchWithHookCondition } from "./SearchWithHook";
 
 export const SamplePanel: React.FunctionComponent<IConditionPanelProps<
-	ISearchWithHookCondition
->> = (props: IConditionPanelProps<ISearchWithHookCondition>) => {
+	ISearchWithHookCondition,
+	any
+>> = (props: IConditionPanelProps<ISearchWithHookCondition, any>) => {
 	const { condition, handleChangeInput, enterSearch } = props;
 
 	return (

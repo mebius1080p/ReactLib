@@ -5,7 +5,7 @@ import { IRecord } from "./SearchWithHook";
 export const SampleList: React.FunctionComponent<IListPanelProps<IRecord>> = (
 	props: IListPanelProps<IRecord>
 ) => {
-	const { record, handleClickDetail } = props;
+	const { records, handleClickDetail } = props;
 
 	return (
 		<React.Fragment>
@@ -17,7 +17,7 @@ export const SampleList: React.FunctionComponent<IListPanelProps<IRecord>> = (
 				</tr>
 			</thead>
 			<tbody>
-				{record.map((r, index) => {
+				{records.map((r, index) => {
 					return (
 						<tr key={index}>
 							<td>{r.fuga}</td>
