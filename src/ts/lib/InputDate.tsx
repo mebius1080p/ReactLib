@@ -19,7 +19,7 @@ interface IInputDateProps {
 	dateFormat?: string;
 }
 
-type TBS4Size = "xs" | "sm" | "md" | "lg" | "xl" | "";
+export type TBS4Size = "xs" | "sm" | "md" | "lg" | "xl" | "";
 
 /**
  * bootstrap4 対応日付選択コンポーネント

@@ -17,7 +17,7 @@ interface ISearchWithHookProps {}
 export interface ISearchWithHookCondition
 	extends Record<string, TConditionValue> {
 	cond1: string;
-	cond2: string;
+	cond2: number;
 	forcheck: number[];
 }
 
@@ -28,7 +28,7 @@ export interface IRecord extends Record<string, string> {
 
 const initialCondition: ISearchWithHookCondition = {
 	cond1: "",
-	cond2: "",
+	cond2: 0,
 	forcheck: [],
 };
 

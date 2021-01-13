@@ -1,4 +1,5 @@
 import * as React from "react";
+import { BS4Input } from "../lib/BS4Input";
 import { IConditionPanelProps } from "../lib/SearchPage";
 import { ISearchWithHookCondition } from "./SearchWithHook";
 
@@ -12,24 +13,21 @@ export const SamplePanel: React.FunctionComponent<IConditionPanelProps<
 		<div>
 			<div className="form-inline">
 				条件1 :{" "}
-				<input
-					type="text"
+				<BS4Input
 					name="cond1"
 					value={condition.cond1}
 					onChange={handleChangeInput}
 					onKeyDown={enterSearch}
-					className="form-control form-control-sm"
 				/>
 			</div>
 			<div className="form-inline">
 				条件2 :{" "}
-				<input
-					type="text"
+				<BS4Input<number>
+					type="number"
 					name="cond2"
 					value={condition.cond2}
 					onChange={handleChangeInput}
 					onKeyDown={enterSearch}
-					className="form-control form-control-sm"
 				/>
 			</div>
 			<div>
