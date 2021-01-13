@@ -1,16 +1,14 @@
 import * as React from "react";
 import { HogeAPI } from "./HogeAPI";
 import { Paging2 } from "../lib/Paging2";
-import {
-	useBasicSearch,
-	TConditionValue,
-} from "../lib/useBasicSearch";
+import { useBasicSearch, TConditionValue } from "../lib/useBasicSearch";
 import { SearchButtons } from "../lib/SearchButtons";
 import { DetailPageButtons } from "../lib/DetailPageButtons";
 import { AddNew } from "../lib/AddNew";
 import { SearchPage } from "../lib/SearchPage";
 import { SamplePanel } from "./SamplePanel";
 import { SampleList } from "./SampleList";
+import { ISelectListItem } from "../lib/BS4Select";
 
 interface ISearchWithHookProps {}
 
@@ -18,6 +16,7 @@ export interface ISearchWithHookCondition
 	extends Record<string, TConditionValue> {
 	cond1: string;
 	cond2: number;
+	cond3: number;
 	forcheck: number[];
 }
 
@@ -29,8 +28,32 @@ export interface IRecord extends Record<string, string> {
 const initialCondition: ISearchWithHookCondition = {
 	cond1: "",
 	cond2: 0,
+	cond3: 0,
 	forcheck: [],
 };
+
+const sampleList: ISelectListItem<number>[] = [
+	{
+		name: "-",
+		value: 0,
+	},
+	{
+		name: "hoge",
+		value: 1,
+	},
+	{
+		name: "fuga",
+		value: 2,
+	},
+	{
+		name: "piyo",
+		value: 3,
+	},
+];
+
+export interface IExtraParam {
+	sampleList: ISelectListItem<number>[];
+}
 
 /**
  * hook で作成した検索コンポーネントのサンプル
@@ -163,11 +186,11 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 				/>
 			</div>
 			<div>
-				<SearchPage<ISearchWithHookCondition, IRecord, any>
+				<SearchPage<ISearchWithHookCondition, IRecord, IExtraParam>
 					title="サンプル"
 					ConditionPanel={SamplePanel}
 					initialCondition={initialCondition}
-					extraParam={{}}
+					extraParam={{ sampleList }}
 					searchFunction={HogeAPI.search2}
 					Listpanel={SampleList}
 					handleClickDetail={() => {

@@ -1,11 +1,14 @@
 import * as React from "react";
+import { TStringNumber } from "./BS4Input";
 import { TBS4Size } from "./InputDate";
 import { IFakeEvent } from "./useBasicSearch";
 
-export type TStringNumber = string | number;
+export interface ISelectListItem<T> {
+	name: string;
+	value: T extends number ? number : string;
+}
 
-interface IBS4InputProps<T> {
-	type?: T extends number ? "number" : "text";
+interface IBS4SelectProps<T> {
 	name: string;
 	value: T extends number ? number : string;
 	hasError?: boolean;
@@ -16,21 +19,20 @@ interface IBS4InputProps<T> {
 			  >
 			| IFakeEvent
 	) => void;
-	onKeyDown?: (
-		ev: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>
-	) => void;
+	list: ISelectListItem<T>[];
 	size?: TBS4Size;
 	extraClass?: string;
 }
 
-export function BS4Input<T extends TStringNumber = string>(props: IBS4InputProps<T>) {
+export function BS4Select<T extends TStringNumber = number>(
+	props: IBS4SelectProps<T>
+) {
 	const {
-		type = "text",
 		name,
 		value,
 		onChange,
+		list,
 		hasError = false,
-		onKeyDown = (ev) => {},
 		size = "sm",
 		extraClass = "",
 	} = props;
@@ -41,13 +43,19 @@ export function BS4Input<T extends TStringNumber = string>(props: IBS4InputProps
 	const classString = `${baseClass} ${sizeClass} ${extraClass} ${errorClass}`;
 
 	return (
-		<input
-			type={type}
-			className={classString}
+		<select
 			name={name}
 			value={value}
+			className={classString}
 			onChange={onChange}
-			onKeyDown={onKeyDown}
-		/>
+		>
+			{list.map((l, i) => {
+				return (
+					<option key={i} value={l.value}>
+						{l.name}
+					</option>
+				);
+			})}
+		</select>
 	);
 }

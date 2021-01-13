@@ -1,13 +1,15 @@
 import * as React from "react";
 import { BS4Input } from "../lib/BS4Input";
+import { BS4Select } from "../lib/BS4Select";
 import { IConditionPanelProps } from "../lib/SearchPage";
-import { ISearchWithHookCondition } from "./SearchWithHook";
+import { IExtraParam, ISearchWithHookCondition } from "./SearchWithHook";
 
 export const SamplePanel: React.FunctionComponent<IConditionPanelProps<
 	ISearchWithHookCondition,
 	any
->> = (props: IConditionPanelProps<ISearchWithHookCondition, any>) => {
-	const { condition, handleChangeInput, enterSearch } = props;
+>> = (props: IConditionPanelProps<ISearchWithHookCondition, IExtraParam>) => {
+	const { condition, handleChangeInput, enterSearch, extraParam } = props;
+	const { sampleList } = extraParam;
 
 	return (
 		<div>
@@ -56,6 +58,15 @@ export const SamplePanel: React.FunctionComponent<IConditionPanelProps<
 					}}
 				/>
 				XYZ
+			</div>
+			<div className="form-inline">
+				条件3 :{" "}
+				<BS4Select
+					name="cond3"
+					list={sampleList}
+					value={condition.cond3}
+					onChange={handleChangeInput}
+				/>
 			</div>
 		</div>
 	);
