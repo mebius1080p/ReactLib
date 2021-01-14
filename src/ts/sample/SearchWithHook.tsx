@@ -1,7 +1,7 @@
 import * as React from "react";
 import { HogeAPI } from "./HogeAPI";
 import { Paging2 } from "../lib/Paging2";
-import { useBasicSearch, TConditionValue } from "../lib/useBasicSearch";
+import { useBasicSearch, TConditionValue, IFakeEvent } from "../lib/useBasicSearch";
 import { SearchButtons } from "../lib/SearchButtons";
 import { DetailPageButtons } from "../lib/DetailPageButtons";
 import { AddNew } from "../lib/AddNew";
@@ -9,6 +9,7 @@ import { SearchPage } from "../lib/SearchPage";
 import { SamplePanel } from "./SamplePanel";
 import { SampleList } from "./SampleList";
 import { ISelectListItem } from "../lib/BS4Select";
+import { BS4Textarea } from "../lib/BS4Textarea";
 
 interface ISearchWithHookProps {}
 
@@ -76,6 +77,17 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 		initialCondition,
 		HogeAPI.search2
 	);
+
+	const [textareaString, setTextarea] = React.useState("");
+	const handleTextarea = (
+		ev:
+			| React.ChangeEvent<
+					HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+			  >
+			| IFakeEvent
+	) => {
+		setTextarea(ev.target.value);
+	};
 
 	const handleBack = () => {
 		console.log("back!");
@@ -196,6 +208,13 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 					handleClickDetail={() => {
 						console.log("detail!");
 					}}
+				/>
+			</div>
+			<div>
+				<BS4Textarea
+					name="hoge"
+					value={textareaString}
+					onChange={handleTextarea}
 				/>
 			</div>
 		</div>
