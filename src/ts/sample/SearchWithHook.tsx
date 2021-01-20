@@ -200,6 +200,7 @@ export const SearchWithHook: React.FunctionComponent<ISearchWithHookProps> = (
 			<div>
 				<SearchPage<ISearchWithHookCondition, IRecord, IExtraParam>
 					title="サンプル"
+					sskey="sample/search"
 					ConditionPanel={SamplePanel}
 					initialCondition={initialCondition}
 					extraParam={{ sampleList }}

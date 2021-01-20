@@ -11,6 +11,7 @@ import {
 
 interface ISearchPageProps<C, R, E> {
 	title: string;
+	sskey: string;
 	ConditionPanel: React.FunctionComponent<IConditionPanelProps<C, E>>;
 	initialCondition: C;
 	extraParam: E;
@@ -50,6 +51,7 @@ export function SearchPage<C extends Record<string, TConditionValue>, R, E>(
 ): React.ReactElement {
 	const {
 		title,
+		sskey,
 		ConditionPanel,
 		initialCondition,
 		Listpanel,
@@ -71,7 +73,7 @@ export function SearchPage<C extends Record<string, TConditionValue>, R, E>(
 		pageObj,
 		records,
 	} = useBasicSearch<C, R>(
-		"searchwithhook",
+		sskey,
 		initialCondition,
 		searchFunction,
 		makeChangeableItems
