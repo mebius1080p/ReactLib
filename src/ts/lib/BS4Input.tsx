@@ -21,9 +21,14 @@ interface IBS4InputProps<T> {
 	) => void;
 	size?: TBS4Size;
 	extraClass?: string;
+	step?: number;
+	min?: number;
+	max?: number;
 }
 
-export function BS4Input<T extends TStringNumber = string>(props: IBS4InputProps<T>) {
+export function BS4Input<T extends TStringNumber = string>(
+	props: IBS4InputProps<T>
+) {
 	const {
 		type = "text",
 		name,
@@ -33,6 +38,9 @@ export function BS4Input<T extends TStringNumber = string>(props: IBS4InputProps
 		onKeyDown = (ev) => {},
 		size = "sm",
 		extraClass = "",
+		step = 1,
+		min = 0,
+		max = undefined,
 	} = props;
 
 	const baseClass = "form-control";
@@ -48,6 +56,9 @@ export function BS4Input<T extends TStringNumber = string>(props: IBS4InputProps
 			value={value}
 			onChange={onChange}
 			onKeyDown={onKeyDown}
+			step={step}
+			min={min}
+			max={max}
 		/>
 	);
 }
