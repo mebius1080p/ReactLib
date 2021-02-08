@@ -94,16 +94,14 @@ export function DetailPage<D extends Record<string, any>, E>(
 				<i className="fas fa-pen"></i>
 				{title}新規作成・詳細
 			</h4>
-			<form>
-				<table className="table table-bordered table-striped table-condensed table-sm">
-					<InsideComponent
-						inputObj={inputObj}
-						inputError={inputError}
-						extraParam={extraParam}
-						handleChangeInput={handleChangeInput}
-					/>
-				</table>
-			</form>
+			<table className="table table-bordered table-striped table-condensed table-sm">
+				<InsideComponent
+					inputObj={inputObj}
+					inputError={inputError}
+					extraParam={extraParam}
+					handleChangeInput={handleChangeInput}
+				/>
+			</table>
 			<DetailPageButtons
 				handleBack={handleBack}
 				handleCommit={handleCommit}
