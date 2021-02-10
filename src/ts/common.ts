@@ -1,5 +1,3 @@
-import { json_obj } from "../typings/base";
-
 /**
  * fetch 時のレスポンスでリダイレクトが帰ってきたときのための関数
  * @param {Response} response fetch レスポンス
@@ -58,7 +56,7 @@ export function fireEventById(
  */
 export function fetchUtilJson(request: Request): Promise<object> {
 	return fetch(request)
-		.then(response => {
+		.then((response) => {
 			redirectChecker(response);
 			return new Promise((resolve, reject) => {
 				if (response.ok) {
@@ -77,6 +75,13 @@ export function fetchUtilJson(request: Request): Promise<object> {
 				}
 			});
 		});
+}
+
+//jsonobj のインターフェース (ajax で受け取るデータ構造)
+export interface json_obj {
+	status: string;
+	message: string;
+	data: any;
 }
 
 /**
@@ -117,7 +122,7 @@ export async function ajaxFormAsync(
 			body: form,
 			credentials: "include",
 			method: "POST",
-			redirect: "manual"
+			redirect: "manual",
 		});
 		disableButtonByClassName(classString);
 		const json = await fetchUtilJsonAsync(req);
@@ -159,7 +164,7 @@ export async function fetchJsonObjAsync<T>(
 	const reqOption: RequestInit = {
 		credentials: "include",
 		method: fetchOption.method || "GET",
-		redirect: "manual"
+		redirect: "manual",
 	};
 	if ("body" in fetchOption) {
 		reqOption.body = fetchOption.body;
@@ -186,7 +191,7 @@ export function disableButtonByClassName(className: string): void {
 	const buttons: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
 		"." + className
 	);
-	buttons.forEach(button => {
+	buttons.forEach((button) => {
 		button.disabled = true;
 	});
 }
@@ -200,7 +205,7 @@ export function enableButtonByClassName(className: string): void {
 	const buttons: NodeListOf<HTMLButtonElement> = document.querySelectorAll(
 		"." + className
 	);
-	buttons.forEach(button => {
+	buttons.forEach((button) => {
 		button.disabled = false;
 	});
 }
@@ -211,7 +216,7 @@ export function enableButtonByClassName(className: string): void {
  */
 function forEachPolyfill() {
 	if ("NodeList" in window && !NodeList.prototype.forEach) {
-		NodeList.prototype.forEach = function(callback, thisArg) {
+		NodeList.prototype.forEach = function (callback, thisArg) {
 			thisArg = thisArg || window;
 			for (let i = 0; i < this.length; i++) {
 				callback.call(thisArg, this[i], i, this);
