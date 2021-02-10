@@ -1,6 +1,6 @@
 const path = require("path");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
+const { ESBuildPlugin, ESBuildMinifyPlugin } = require("esbuild-loader");
 
 module.exports = {
 	entry: {
@@ -20,16 +20,10 @@ module.exports = {
 				test: /\.tsx?$/,
 				use: [
 					{
-						loader: "thread-loader",
+						loader: "esbuild-loader",
 						options: {
-							// there should be 1 cpu for the fork-ts-checker-webpack-plugin
-							workers: require("os").cpus().length - 1,
-						},
-					},
-					{
-						loader: "ts-loader",
-						options: {
-							happyPackMode: true, // IMPORTANT! use happyPackMode mode to speed-up compilation and reduce errors reported to webpack
+							loader: "tsx",
+							target: "es2016",
 						},
 					},
 				],
@@ -52,9 +46,11 @@ module.exports = {
 				},
 			},
 		}),
+		new ESBuildPlugin(),
 	],
 	optimization: {
-		minimizer: [new TerserPlugin({ parallel: true })],
+		minimize: true,
+		minimizer: [new ESBuildMinifyPlugin({ target: "es2016" })],
 		splitChunks: {
 			cacheGroups: {
 				vendor: {
