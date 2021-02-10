@@ -8,6 +8,7 @@ interface IDetailPageProps<D, E> {
 	InsideComponent: React.FunctionComponent<IInsideComponentProps<D, E>>;
 	inputObj: D; //素通り
 	extraParam: E;
+	message?: string;
 	handleChangeInput: (
 		ev:
 			| React.ChangeEvent<
@@ -45,13 +46,16 @@ export function DetailPage<D extends Record<string, any>, E>(
 		InsideComponent,
 		inputObj,
 		extraParam,
+		message = "",
 		handleChangeInput,
 		simpleCommit,
 		handleBack,
-		preProcessCommit = (inputObj:D) => {},
+		preProcessCommit = (inputObj: D) => {},
 	} = props;
 
-	const [inputError, setInputError] = React.useState<Partial<TInputError<D>>>({});
+	const [inputError, setInputError] = React.useState<Partial<TInputError<D>>>(
+		{}
+	);
 	const [showModal, setShowModal] = React.useState(false);
 	const [modalType, setModalType] = React.useState<TModalMode>("confirm");
 
@@ -94,6 +98,10 @@ export function DetailPage<D extends Record<string, any>, E>(
 				<i className="fas fa-pen"></i>
 				{title}新規作成・詳細
 			</h4>
+			{message !== "" && (
+				<div className="alert alert-danger">{message}</div>
+			)}
+
 			<table className="table table-bordered table-striped table-condensed table-sm">
 				<InsideComponent
 					inputObj={inputObj}
