@@ -3,16 +3,19 @@ import { fetchJsonObjAsync, ISimpleFetchOption } from "../common";
 import { ICommittable, simpleCommit } from "./simpleCommit";
 import { IFakeEvent } from "./useBasicSearch";
 
-export function useDetail<T extends ICommittable>(
+export function useDetail<T extends ICommittable, P = {}>(
 	initialObj: T,
 	entryUrl: string,
-	commitUrl: string
+	commitUrl: string,
+	initialParam?: P,
+	fetchParamFunc?: () => Promise<P>
 ) {
 	// hook
 	const [hasInitialized, setHasInitialized] = React.useState(false);
 	const [inputObj, setInputObj] = React.useState<T>(
 		JSON.parse(JSON.stringify(initialObj))
 	);
+	const [param, setParam] = React.useState<P | undefined>(initialParam);
 	const [message, setMessage] = React.useState("");
 
 	// handler
@@ -41,6 +44,11 @@ export function useDetail<T extends ICommittable>(
 	React.useEffect(() => {
 		(async () => {
 			try {
+				if (fetchParamFunc) {
+					const extraParam = await fetchParamFunc();
+					setParam(extraParam);
+				}
+
 				const fetchParam: ISimpleFetchOption = {
 					url: entryUrl,
 					method: "GET",
@@ -62,6 +70,7 @@ export function useDetail<T extends ICommittable>(
 		hasInitialized,
 		inputObj,
 		message,
+		param,
 		handleChangeInput,
 		simpleCommitX,
 	};
