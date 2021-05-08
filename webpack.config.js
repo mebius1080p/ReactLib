@@ -1,6 +1,6 @@
 const path = require("path");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const { ESBuildPlugin, ESBuildMinifyPlugin } = require("esbuild-loader");
+const { ESBuildMinifyPlugin } = require("esbuild-loader");
 
 module.exports = {
 	entry: {
@@ -46,7 +46,6 @@ module.exports = {
 				},
 			},
 		}),
-		new ESBuildPlugin(),
 	],
 	optimization: {
 		minimize: true,
