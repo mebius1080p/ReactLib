@@ -2,6 +2,7 @@ import * as React from "react";
 import { IPaging } from "./Paging2";
 import { objAssign } from "./objAssign";
 import { SSManager } from "./SSManager";
+import { hasData } from "./typeGuard";
 
 export interface IInjectedProps<T, U = {}> {
 	onClickPaging: (ev: React.MouseEvent, page: number) => void;
@@ -76,16 +77,16 @@ export default function createSearchComponent<T extends TCondition, S, U = {}>(
 					total: 0,
 					page: 1,
 					perpage: 20,
-					totalpage: 1
+					totalpage: 1,
 				},
 				condition: Object.assign(
 					JSON.parse(JSON.stringify(savedCondition)),
 					{
-						page: 1
+						page: 1,
 					}
 				),
 				records: [],
-				other
+				other,
 			};
 			this.handlePaging = this.handlePaging.bind(this);
 			this.handleClickSearch = this.handleClickSearch.bind(this);
@@ -109,13 +110,13 @@ export default function createSearchComponent<T extends TCondition, S, U = {}>(
 						total: result.total,
 						page: result.page,
 						perpage: result.perpage,
-						totalpage: result.totalpage
+						totalpage: result.totalpage,
 					},
-					records: result.data
+					records: result.data,
 				});
 			} catch (error) {
 				console.dir(error);
-				if ("data" in error) {
+				if (hasData<any[]>(error)) {
 					const { data } = error;
 					if (
 						Array.isArray(data) &&
@@ -123,7 +124,7 @@ export default function createSearchComponent<T extends TCondition, S, U = {}>(
 						data[0] === "should_reset"
 					) {
 						this.setState({
-							records: []
+							records: [],
 						});
 					}
 				}
@@ -156,7 +157,7 @@ export default function createSearchComponent<T extends TCondition, S, U = {}>(
 		public handleClickReset(_ev: React.MouseEvent): void {
 			const strInitial = JSON.stringify(initialCondition);
 			this.setState({
-				condition: JSON.parse(strInitial)
+				condition: JSON.parse(strInitial),
 			});
 		}
 		/**
@@ -178,7 +179,7 @@ export default function createSearchComponent<T extends TCondition, S, U = {}>(
 					const key = name;
 					(condition as TCondition)[key] = value;
 					this.setState({
-						condition
+						condition,
 					});
 				}
 			} else {
@@ -187,7 +188,7 @@ export default function createSearchComponent<T extends TCondition, S, U = {}>(
 					const key = name;
 					(condition as TCondition)[key] = values;
 					this.setState({
-						condition
+						condition,
 					});
 				}
 			}
@@ -202,7 +203,7 @@ export default function createSearchComponent<T extends TCondition, S, U = {}>(
 			const cloneCondition = JSON.parse(JSON.stringify(condition));
 			this.setState({
 				condition: cloneCondition,
-				other
+				other,
 			});
 		}
 		/**
@@ -211,7 +212,7 @@ export default function createSearchComponent<T extends TCondition, S, U = {}>(
 		 */
 		public handleChangeOther(other: U): void {
 			this.setState({
-				other
+				other,
 			});
 		}
 		/**

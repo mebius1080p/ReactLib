@@ -1,6 +1,7 @@
 import * as React from "react";
 import { fetchJsonObjAsync, ISimpleFetchOption } from "../common";
 import { ICommittable, simpleCommit } from "./simpleCommit";
+import { hasMessage } from "./typeGuard";
 import { IFakeEvent } from "./useBasicSearch";
 
 export function useDetail<T extends ICommittable, P = {}>(
@@ -59,7 +60,7 @@ export function useDetail<T extends ICommittable, P = {}>(
 				setHasInitialized(true);
 			} catch (error) {
 				console.dir(error);
-				if ("message" in error) {
+				if (hasMessage(error)) {
 					setMessage(error.message);
 				}
 			}

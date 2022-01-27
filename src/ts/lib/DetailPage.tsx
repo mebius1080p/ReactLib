@@ -1,6 +1,7 @@
 import * as React from "react";
 import { DetailPageButtons } from "./DetailPageButtons";
 import { SimpleCommitModal, TModalMode } from "./SimpleCommitModal";
+import { hasData, TSimpleObj } from "./typeGuard";
 import { IFakeEvent } from "./useBasicSearch";
 
 interface IDetailPageProps<D, E> {
@@ -72,7 +73,11 @@ export function DetailPage<D extends Record<string, any>, E>(
 			setModalType("thanks");
 		} catch (error) {
 			console.dir(error);
-			if ("data" in error) {
+			if (
+				hasData<TInputError<D extends Record<string, any> ? any : any>>(
+					error
+				)
+			) {
 				for (const key in error.data) {
 					if (error.data.hasOwnProperty(key)) {
 						// const element = error.data[key];
