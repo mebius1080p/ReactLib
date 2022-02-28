@@ -55,7 +55,7 @@ export function useDetail<T extends ICommittable, P = {}>(
 					method: "GET",
 				};
 				const response = await fetchJsonObjAsync<T>(fetchParam);
-				setInputObj(response.data);
+				setInputObj({ ...inputObj, ...response.data }); //マージ
 
 				setHasInitialized(true);
 			} catch (error) {
@@ -72,6 +72,7 @@ export function useDetail<T extends ICommittable, P = {}>(
 		inputObj,
 		message,
 		param,
+		setMessage,
 		handleChangeInput,
 		simpleCommitX,
 	};

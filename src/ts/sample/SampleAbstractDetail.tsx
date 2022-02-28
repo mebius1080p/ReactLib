@@ -38,6 +38,7 @@ export const SampleAbstractDetail: React.FunctionComponent<ISampleAbstractDetail
 	const [inputObj, setInputObj] = React.useState<ISampleDetailInsideObj>(
 		initialInputObj
 	);
+	const [message, setMessage] = React.useState("");
 
 	const handleChangeInput = (
 		ev:
@@ -65,6 +66,8 @@ export const SampleAbstractDetail: React.FunctionComponent<ISampleAbstractDetail
 			InsideComponent={SampleDetailInside}
 			inputObj={inputObj}
 			extraParam={extraParam}
+			message={message}
+			setMessage={setMessage}
 			handleChangeInput={handleChangeInput}
 			simpleCommit={simpleCommit}
 			handleBack={handleBack}

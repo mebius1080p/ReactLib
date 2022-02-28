@@ -1,7 +1,7 @@
 import * as React from "react";
 import { DetailPageButtons } from "./DetailPageButtons";
 import { SimpleCommitModal, TModalMode } from "./SimpleCommitModal";
-import { hasData, TSimpleObj } from "./typeGuard";
+import { hasData, hasMessage, TSimpleObj } from "./typeGuard";
 import { IFakeEvent } from "./useBasicSearch";
 
 interface IDetailPageProps<D, E> {
@@ -10,6 +10,7 @@ interface IDetailPageProps<D, E> {
 	inputObj: D; //素通り
 	extraParam: E;
 	message?: string;
+	setMessage: (message: string) => void;
 	handleChangeInput: (
 		ev:
 			| React.ChangeEvent<
@@ -48,6 +49,7 @@ export function DetailPage<D extends Record<string, any>, E>(
 		inputObj,
 		extraParam,
 		message = "",
+		setMessage,
 		handleChangeInput,
 		simpleCommit,
 		handleBack,
@@ -85,6 +87,9 @@ export function DetailPage<D extends Record<string, any>, E>(
 					}
 				}
 				setInputError({ ...inputError });
+			}
+			if (hasMessage(error)) {
+				setMessage(error.message);
 			}
 			setModalType("error");
 		}

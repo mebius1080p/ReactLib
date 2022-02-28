@@ -6,20 +6,20 @@ const modalString: TModalDic = {
 		title: "登録確認",
 		message: "登録しますか？",
 		useYesNo: true,
-		cls: "bg-success text-white"
+		cls: "bg-success text-white",
 	},
 	error: {
 		title: "エラー",
 		message: "エラーが発生しました",
 		useYesNo: false,
-		cls: "bg-danger text-white"
+		cls: "bg-danger text-white",
 	},
 	thanks: {
 		title: "登録完了",
 		message: "登録完了",
 		useYesNo: false,
-		cls: "bg-primary text-white"
-	}
+		cls: "bg-primary text-white",
+	},
 };
 
 interface ISimpleCommitModalProps {
@@ -81,7 +81,7 @@ export const SimpleCommitModal: React.FunctionComponent<
 						<button
 							type="button"
 							className="btn btn-secondary btn-sm"
-							onClick={ev => {
+							onClick={(ev) => {
 								handleClose();
 							}}
 							disabled={!enableButton}
