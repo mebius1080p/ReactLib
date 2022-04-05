@@ -1,7 +1,11 @@
 import * as React from "react";
 import { HogeAPI } from "./HogeAPI";
 import { Paging2 } from "../lib/Paging2";
-import { useBasicSearch, TConditionValue, IFakeEvent } from "../lib/useBasicSearch";
+import {
+	useBasicSearch,
+	TConditionValue,
+	IFakeEvent,
+} from "../lib/useBasicSearch";
 import { SearchButtons } from "../lib/SearchButtons";
 import { DetailPageButtons } from "../lib/DetailPageButtons";
 import { AddNew } from "../lib/AddNew";
@@ -19,6 +23,7 @@ export interface ISearchWithHookCondition
 	cond2: number;
 	cond3: number;
 	forcheck: number[];
+	condDate: string;
 }
 
 export interface IRecord extends Record<string, string> {
@@ -31,6 +36,7 @@ const initialCondition: ISearchWithHookCondition = {
 	cond2: 0,
 	cond3: 0,
 	forcheck: [],
+	condDate: "",
 };
 
 const sampleList: ISelectListItem<number>[] = [

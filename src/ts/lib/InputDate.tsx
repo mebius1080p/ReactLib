@@ -48,7 +48,7 @@ export const InputDate: React.FunctionComponent<IInputDateProps> = (
 	return (
 		<DatePicker
 			customInput={
-				<InputDateClassVersion
+				<InputDateFuncVersion
 					name={name}
 					value={value}
 					size={size}
@@ -69,7 +69,7 @@ export const InputDate: React.FunctionComponent<IInputDateProps> = (
 	);
 };
 
-interface IInputDateClassVersionProps {
+interface IInputDateFuncVersionProps {
 	name: string;
 	value: string; // yyyy-mm-dd など、new Date() して解析可能なもの
 	size: TBS4Size;
@@ -81,59 +81,50 @@ interface IInputDateClassVersionProps {
 	) => void;
 }
 
-interface IInputDateClassVersionState {}
+export const InputDateFuncVersion: React.FunctionComponent<
+	IInputDateFuncVersionProps
+> = (props: IInputDateFuncVersionProps) => {
+	const {
+		name,
+		value,
+		size = "",
+		extraClass = "",
+		onClick = (
+			date: Date | null,
+			ev: React.SyntheticEvent<any, Event>
+		) => {},
+	} = props;
 
-class InputDateClassVersion extends React.Component<
-	IInputDateClassVersionProps,
-	IInputDateClassVersionState
-> {
-	constructor(props: IInputDateClassVersionProps) {
-		super(props);
-		this.state = {};
+	const sizeClass = size === "" ? "" : `form-control-${size}`;
+	const inputClass = `form-control ${sizeClass} ${extraClass}`;
+	let date: Date | null = null;
+	date = new Date(value);
+	if (date.toString() === "Invalid Date") {
+		date = null;
 	}
-	public render(): JSX.Element {
-		const {
-			name,
-			value,
-			size = "",
-			extraClass = "",
-			onClick = (
-				date: Date | null,
-				ev: React.SyntheticEvent<any, Event>
-			) => {},
-		} = this.props;
 
-		const sizeClass = size === "" ? "" : `form-control-${size}`;
-		const inputClass = `form-control ${sizeClass} ${extraClass}`;
-		let date: Date | null = null;
-		date = new Date(value);
-		if (date.toString() === "Invalid Date") {
-			date = null;
-		}
-
-		return (
-			<div className="input-group">
-				<input
-					type="text"
-					name={name}
-					className={inputClass}
-					value={value}
-					onChange={(ev) => {
-						// 変更させない
+	return (
+		<div className="input-group">
+			<input
+				type="text"
+				name={name}
+				className={inputClass}
+				value={value}
+				onChange={(ev) => {
+					// 変更させない
+				}}
+				readOnly={true}
+			/>
+			<div className="input-group-append">
+				<div
+					className="input-group-text"
+					onClick={(ev) => {
+						onClick(date, ev);
 					}}
-					readOnly={true}
-				/>
-				<div className="input-group-append">
-					<div
-						className="input-group-text"
-						onClick={(ev) => {
-							onClick(date, ev);
-						}}
-					>
-						<i className="fas fa-calendar-alt" />
-					</div>
+				>
+					<i className="fas fa-calendar-alt" />
 				</div>
 			</div>
-		);
-	}
-}
+		</div>
+	);
+};

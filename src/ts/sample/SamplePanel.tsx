@@ -1,13 +1,14 @@
 import * as React from "react";
 import { BS4Input } from "../lib/BS4Input";
 import { BS4Select } from "../lib/BS4Select";
+import { InputDate } from "../lib/InputDate";
 import { IConditionPanelProps } from "../lib/SearchPage";
+import { IFakeEvent } from "../lib/useBasicSearch";
 import { IExtraParam, ISearchWithHookCondition } from "./SearchWithHook";
 
-export const SamplePanel: React.FunctionComponent<IConditionPanelProps<
-	ISearchWithHookCondition,
-	any
->> = (props: IConditionPanelProps<ISearchWithHookCondition, IExtraParam>) => {
+export const SamplePanel: React.FunctionComponent<
+	IConditionPanelProps<ISearchWithHookCondition, any>
+> = (props: IConditionPanelProps<ISearchWithHookCondition, IExtraParam>) => {
 	const { condition, handleChangeInput, enterSearch, extraParam } = props;
 	const { sampleList } = extraParam;
 
@@ -60,12 +61,28 @@ export const SamplePanel: React.FunctionComponent<IConditionPanelProps<
 				XYZ
 			</div>
 			<div className="form-inline">
-				条件3 :{" "}
+				条件4 :{" "}
 				<BS4Select
 					name="cond3"
 					list={sampleList}
 					value={condition.cond3}
 					onChange={handleChangeInput}
+				/>
+			</div>
+			<div className="">
+				条件5 :
+				<InputDate
+					name="condDate"
+					value={condition.condDate}
+					handleChangeInput={(ev, name, value) => {
+						const event: IFakeEvent = {
+							target: {
+								name,
+								value,
+							},
+						};
+						handleChangeInput(event);
+					}}
 				/>
 			</div>
 		</div>
