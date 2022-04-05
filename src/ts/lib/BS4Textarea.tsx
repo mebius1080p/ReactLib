@@ -1,27 +1,14 @@
 import * as React from "react";
-import { IFakeEvent } from "./useBasicSearch";
 
-interface IBS4TextareaProps {
-	name: string;
-	value: string;
+type inputProps = React.ComponentProps<"textarea">;
+
+type TBS4TextareaProps = {
 	hasError?: boolean;
-	onChange: (
-		ev:
-			| React.ChangeEvent<
-					HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-			  >
-			| IFakeEvent
-	) => void;
-	onKeyDown?: (
-		ev: React.KeyboardEvent<
-			HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-		>
-	) => void;
 	extraClass?: string;
-}
+} & inputProps;
 
-export const BS4Textarea: React.FunctionComponent<IBS4TextareaProps> = (
-	props: IBS4TextareaProps
+export const BS4Textarea: React.FunctionComponent<TBS4TextareaProps> = (
+	props: TBS4TextareaProps
 ) => {
 	const {
 		name,

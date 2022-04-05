@@ -31,7 +31,7 @@ export const SampleDetailInside: React.FunctionComponent<IInsideComponentProps<
 						name="hoge"
 						value={inputObj.hoge}
 						onChange={handleChangeInput}
-						size="sm"
+						formSize="sm"
 						hasError={"hoge" in inputError}
 					/>
 				</td>

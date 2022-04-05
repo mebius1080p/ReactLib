@@ -1,33 +1,20 @@
 import * as React from "react";
 import { TBS4Size } from "./InputDate";
-import { IFakeEvent } from "./useBasicSearch";
 
 export type TStringNumber = string | number;
 
-interface IBS4InputProps<T> {
+type inputProps = React.ComponentProps<"input">;
+
+type TBS4InputProps<T> = {
 	type?: T extends number ? "number" : "text";
-	name: string;
 	value: T extends number ? number : string;
 	hasError?: boolean;
-	onChange: (
-		ev:
-			| React.ChangeEvent<
-					HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-			  >
-			| IFakeEvent
-	) => void;
-	onKeyDown?: (
-		ev: React.KeyboardEvent<HTMLInputElement | HTMLSelectElement>
-	) => void;
-	size?: TBS4Size;
+	formSize?: TBS4Size;
 	extraClass?: string;
-	step?: number;
-	min?: number;
-	max?: number;
-}
+} & inputProps;
 
 export function BS4Input<T extends TStringNumber = string>(
-	props: IBS4InputProps<T>
+	props: TBS4InputProps<T>
 ) {
 	const {
 		type = "text",
@@ -36,7 +23,7 @@ export function BS4Input<T extends TStringNumber = string>(
 		onChange,
 		hasError = false,
 		onKeyDown = (ev) => {},
-		size = "sm",
+		formSize = "sm",
 		extraClass = "",
 		step = 1,
 		min = 0,
@@ -44,7 +31,7 @@ export function BS4Input<T extends TStringNumber = string>(
 	} = props;
 
 	const baseClass = "form-control";
-	const sizeClass = size !== "" ? `form-control-${size}` : "";
+	const sizeClass = formSize !== "" ? `form-control-${formSize}` : "";
 	const errorClass = hasError ? " border border-danger" : "";
 	const classString = `${baseClass} ${sizeClass} ${extraClass} ${errorClass}`;
 

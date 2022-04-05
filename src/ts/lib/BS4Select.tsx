@@ -1,31 +1,24 @@
 import * as React from "react";
 import { TStringNumber } from "./BS4Input";
 import { TBS4Size } from "./InputDate";
-import { IFakeEvent } from "./useBasicSearch";
 
 export interface ISelectListItem<T> {
 	name: string;
 	value: T extends number ? number : string;
 }
 
-interface IBS4SelectProps<T> {
-	name: string;
+type inputProps = React.ComponentProps<"select">;
+
+type TBS4SelectProps<T> = {
 	value: T extends number ? number : string;
 	hasError?: boolean;
-	onChange: (
-		ev:
-			| React.ChangeEvent<
-					HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-			  >
-			| IFakeEvent
-	) => void;
 	list: ISelectListItem<T>[];
-	size?: TBS4Size;
+	formSize?: TBS4Size;
 	extraClass?: string;
-}
+} & inputProps;
 
 export function BS4Select<T extends TStringNumber = number>(
-	props: IBS4SelectProps<T>
+	props: TBS4SelectProps<T>
 ) {
 	const {
 		name,
@@ -33,12 +26,12 @@ export function BS4Select<T extends TStringNumber = number>(
 		onChange,
 		list,
 		hasError = false,
-		size = "sm",
+		formSize = "sm",
 		extraClass = "",
 	} = props;
 
 	const baseClass = "form-control";
-	const sizeClass = size !== "" ? `form-control-${size}` : "";
+	const sizeClass = formSize !== "" ? `form-control-${formSize}` : "";
 	const errorClass = hasError ? " border border-danger" : "";
 	const classString = `${baseClass} ${sizeClass} ${extraClass} ${errorClass}`;
 
