@@ -80,13 +80,15 @@ export function DetailPage<D extends Record<string, any>, E>(
 					error
 				)
 			) {
+				const newInputError: Partial<TInputError<D>> = {};
 				for (const key in error.data) {
 					if (error.data.hasOwnProperty(key)) {
 						// const element = error.data[key];
 						inputError[key] = "border border-danger";
+						newInputError[key] = "border border-danger";
 					}
 				}
-				setInputError({ ...inputError });
+				setInputError(newInputError);
 			}
 			if (hasMessage(error)) {
 				setMessage(error.message);
