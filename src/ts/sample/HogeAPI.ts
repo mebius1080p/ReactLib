@@ -1,5 +1,5 @@
 import { IPaging } from "../lib/Paging2";
-import { TConditionValue } from "../lib/useBasicSearch";
+import { IOrderBy, TConditionValue } from "../lib/useBasicSearch";
 import { IRecord, ISearchWithHookCondition } from "./SearchWithHook";
 
 export interface IAbc {
@@ -14,14 +14,17 @@ export interface IConditionHoge extends Record<string, TConditionValue> {
 export class HogeAPI {
 	public static async search(
 		cond: IConditionHoge,
-		page: number
-	): Promise<IPaging & { data: IAbc[] }> {
+		page: number,
+		orderObj: IOrderBy
+	): Promise<IPaging & { data: IAbc[] } & IOrderBy> {
 		return {
 			total: 0,
 			page: 1,
 			perpage: 1,
 			totalpage: 1,
 			data: [],
+			column: "",
+			order: "ASC",
 		};
 	}
 	/**
@@ -31,8 +34,9 @@ export class HogeAPI {
 	 */
 	public static async search2(
 		cond: ISearchWithHookCondition,
-		page: number
-	): Promise<IPaging & { data: IRecord[] }> {
+		page: number,
+		orderObj: IOrderBy
+	): Promise<IPaging & { data: IRecord[] } & IOrderBy> {
 		console.log("request search!");
 		console.log(page);
 		const data = [
@@ -59,6 +63,8 @@ export class HogeAPI {
 			perpage: 4,
 			totalpage: 3,
 			data,
+			column: "",
+			order: "ASC",
 		};
 	}
 }

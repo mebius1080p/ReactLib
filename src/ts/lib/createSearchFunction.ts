@@ -1,19 +1,17 @@
 import { fetchJsonObjAsync, ISimpleFetchOption } from "../common";
 import { IPaging } from "./Paging2";
-import { TConditionValue } from "./useBasicSearch";
+import { IOrderBy, TConditionValue } from "./useBasicSearch";
 
 /**
  * チェックボックスなどを使用しない、シンプルな検索フォーム用の検索関数作成関数
  * @param url 検索先 url
  */
 export function createSearchFunction(url: string) {
-	const searchFunc = async <
-		T extends Record<string, TConditionValue>,
-		R
-	>(
+	const searchFunc = async <T extends Record<string, TConditionValue>, R>(
 		condition: T,
-		page: number
-	): Promise<IPaging & { data: R[] }> => {
+		page: number,
+		orderObj: IOrderBy
+	): Promise<IPaging & { data: R[] } & IOrderBy> => {
 		const form = new FormData();
 		for (const key in condition) {
 			if (condition.hasOwnProperty(key)) {
@@ -32,14 +30,16 @@ export function createSearchFunction(url: string) {
 			}
 		}
 		form.append("page", page.toString());
+		form.append("order_column", orderObj.column);
+		form.append("order_order", orderObj.order);
 		const fetchOption: ISimpleFetchOption = {
 			url,
 			method: "POST",
-			body: form
+			body: form,
 		};
-		const response = await fetchJsonObjAsync<IPaging & { data: R[] }>(
-			fetchOption
-		);
+		const response = await fetchJsonObjAsync<
+			IPaging & { data: R[] } & IOrderBy
+		>(fetchOption);
 		return response.data;
 	};
 	return searchFunc;

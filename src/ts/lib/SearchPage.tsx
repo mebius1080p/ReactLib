@@ -4,6 +4,7 @@ import { IPaging, Paging2 } from "./Paging2";
 import { SearchButtons } from "./SearchButtons";
 import {
 	IFakeEvent,
+	IOrderBy,
 	TChangeableItemsFunction,
 	TConditionValue,
 	useBasicSearch,
@@ -17,8 +18,9 @@ interface ISearchPageProps<C, R, E> {
 	extraParam: E;
 	searchFunction: (
 		condition: C,
-		page: number
-	) => Promise<IPaging & { data: R[] }>;
+		page: number,
+		orderObj: IOrderBy
+	) => Promise<IPaging & { data: R[] } & IOrderBy>;
 	Listpanel: React.FunctionComponent<IListPanelProps<R>>;
 	handleClickDetail: (ev: React.MouseEvent<HTMLButtonElement>) => void;
 	makeChangeableItems?: TChangeableItemsFunction;
@@ -43,6 +45,8 @@ export interface IConditionPanelProps<C, E> {
 export interface IListPanelProps<R> {
 	records: R[];
 	handleClickDetail: (ev: React.MouseEvent<HTMLButtonElement>) => void;
+	handleSort: (ev: React.MouseEvent<HTMLElement>) => Promise<void>;
+	orderObj: IOrderBy;
 }
 
 //functional component に型引き数を渡すには、function で定義するのが肝！！！
@@ -68,9 +72,11 @@ export function SearchPage<C extends Record<string, TConditionValue>, R, E>(
 		handleSearch,
 		handleReset,
 		handleClickPage,
+		handleSort,
 		enterSearch,
 		condition,
 		pageObj,
+		orderObj,
 		records,
 	} = useBasicSearch<C, R>(
 		sskey,
@@ -92,7 +98,7 @@ export function SearchPage<C extends Record<string, TConditionValue>, R, E>(
 				<div className="card-header px-2 py-1 text-white bg-primary">
 					<i className="fas fa-search" /> 検索部
 				</div>
-				<div className="card-body px-3 py-2 mb-3">
+				<div className="card-body px-3 py-2 bg-gray">
 					<ConditionPanel
 						condition={condition}
 						extraParam={extraParam}
@@ -113,6 +119,8 @@ export function SearchPage<C extends Record<string, TConditionValue>, R, E>(
 					<Listpanel
 						records={records}
 						handleClickDetail={handleClickDetail}
+						handleSort={handleSort}
+						orderObj={orderObj}
 					/>
 				</table>
 			</div>

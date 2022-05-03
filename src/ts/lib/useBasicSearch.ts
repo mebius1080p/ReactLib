@@ -27,6 +27,15 @@ interface IChangeableItem {
 	value: TConditionValue;
 }
 
+export interface IOrderBy {
+	column: string;
+	order: "ASC" | "DESC";
+}
+const initialOrderBy: IOrderBy = {
+	column: "",
+	order: "ASC",
+};
+
 export type TChangeableItemsFunction = (name: string) => IChangeableItem[];
 
 /**
@@ -42,8 +51,9 @@ export function useBasicSearch<T extends Record<string, TConditionValue>, R>(
 	initialCondition: T,
 	searchFunction: (
 		condition: T,
-		page: number
-	) => Promise<IPaging & { data: R[] }>,
+		page: number,
+		orderObj: IOrderBy
+	) => Promise<IPaging & { data: R[] } & IOrderBy>,
 	makeChangeableItems: TChangeableItemsFunction = (name: string) => {
 		return [];
 	}
@@ -73,6 +83,7 @@ export function useBasicSearch<T extends Record<string, TConditionValue>, R>(
 	const [pageObj, setPageobj] = React.useState<IPaging>(
 		JSON.parse(JSON.stringify({ ...applyPageObj }))
 	);
+	const [orderObj, setOrderObj] = React.useState<IOrderBy>(initialOrderBy);
 	const [records, setRecords] = React.useState<R[]>([]);
 
 	// handler
@@ -145,19 +156,45 @@ export function useBasicSearch<T extends Record<string, TConditionValue>, R>(
 			const stringCondition = JSON.stringify(condition);
 			ssm.save(stringCondition);
 		}
-		searchFunctionEntity(condition, pageObj.page);
+		searchFunctionEntity(condition, pageObj.page, orderObj);
 	};
 	const handleReset = (ev: React.MouseEvent) => {
 		setCondition(JSON.parse(JSON.stringify(initialCondition)));
 	};
 	const handleClickPage = async (ev: React.MouseEvent, page: number) => {
-		searchFunctionEntity(condition, page);
+		searchFunctionEntity(condition, page, orderObj);
+	};
+	const handleSort = async (ev: React.MouseEvent<HTMLElement>) => {
+		const targetElm = ev.target as HTMLElement;
+		const sortString = targetElm.getAttribute("data-sort");
+		if (sortString === null || sortString === "") {
+			return;
+		} else {
+			const newOrderObj: IOrderBy = {
+				column: sortString,
+				order: "ASC",
+			};
+			if (sortString === orderObj.column) {
+				const newOrder = orderObj.order === "ASC" ? "DESC" : "ASC";
+				newOrderObj.order = newOrder;
+			}
+			setOrderObj(newOrderObj);
+			searchFunctionEntity(condition, pageObj.page, newOrderObj);
+		}
 	};
 
-	const searchFunctionEntity = async (searchCondition: T, page: number) => {
+	const searchFunctionEntity = async (
+		searchCondition: T,
+		page: number,
+		orderArg: IOrderBy
+	) => {
 		try {
-			const response = await searchFunction(searchCondition, page);
-			const { data, ...rest } = response;
+			const response = await searchFunction(
+				searchCondition,
+				page,
+				orderArg
+			);
+			const { data, column, order, ...rest } = response;
 			if (ssmPage.CanUseSS) {
 				// ページ数に関してはサーバーからのレスポンスが正しいので、これを保存
 				const pageForSS: IPageForSS = {
@@ -167,6 +204,10 @@ export function useBasicSearch<T extends Record<string, TConditionValue>, R>(
 			}
 			setRecords(data);
 			setPageobj(rest);
+			setOrderObj({
+				column,
+				order,
+			});
 		} catch (error) {
 			console.dir(error);
 		}
@@ -190,9 +231,11 @@ export function useBasicSearch<T extends Record<string, TConditionValue>, R>(
 		handleSearch,
 		handleReset,
 		handleClickPage,
+		handleSort,
 		enterSearch,
 		condition,
 		pageObj,
+		orderObj,
 		records,
 	};
 }
