@@ -4,7 +4,11 @@ import { SimpleCommitModal, TModalMode } from "./SimpleCommitModal";
 import { hasData, hasMessage, TSimpleObj } from "./typeGuard";
 import { IFakeEvent } from "./useBasicSearch";
 
-interface IDetailPageProps<D, E> {
+interface IInputObjBase {
+	[str: string]: any;
+}
+
+interface IDetailPageProps<D extends IInputObjBase, E> {
 	title: string;
 	InsideComponent: React.FunctionComponent<IInsideComponentProps<D, E>>;
 	inputObj: D; //素通り
@@ -23,9 +27,9 @@ interface IDetailPageProps<D, E> {
 	preProcessCommit?: (obj: D) => void;
 }
 
-export interface IInsideComponentProps<D, E> {
+export interface IInsideComponentProps<D extends IInputObjBase, E> {
 	inputObj: D;
-	inputError: Partial<TInputError<D>>;
+	inputError: TInputError2;
 	extraParam: E;
 	handleChangeInput: (
 		ev:
@@ -36,11 +40,11 @@ export interface IInsideComponentProps<D, E> {
 	) => void;
 }
 
-export type TInputError<D extends Record<string, any>> = {
-	[key in keyof D as string]: string;
+export type TInputError2 = {
+	[K: string]: string;
 };
 
-export function DetailPage<D extends Record<string, any>, E>(
+export function DetailPage<D extends IInputObjBase, E>(
 	props: IDetailPageProps<D, E>
 ) {
 	const {
@@ -56,9 +60,7 @@ export function DetailPage<D extends Record<string, any>, E>(
 		preProcessCommit = (inputObj: D) => {},
 	} = props;
 
-	const [inputError, setInputError] = React.useState<Partial<TInputError<D>>>(
-		{}
-	);
+	const [inputError, setInputError] = React.useState<TInputError2>({});
 	const [showModal, setShowModal] = React.useState(false);
 	const [modalType, setModalType] = React.useState<TModalMode>("confirm");
 
@@ -75,12 +77,8 @@ export function DetailPage<D extends Record<string, any>, E>(
 			setModalType("thanks");
 		} catch (error) {
 			console.dir(error);
-			if (
-				hasData<TInputError<D extends Record<string, any> ? any : any>>(
-					error
-				)
-			) {
-				const newInputError: Partial<TInputError<D>> = {};
+			if (hasData<TInputError2>(error)) {
+				const newInputError: TInputError2 = {};
 				for (const key in error.data) {
 					if (error.data.hasOwnProperty(key)) {
 						// const element = error.data[key];
