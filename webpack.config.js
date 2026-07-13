@@ -23,17 +23,16 @@ module.exports = {
 						loader: "esbuild-loader",
 						options: {
 							loader: "tsx",
-							target: "es2016",
+							target: "es2025",
 						},
 					},
 				],
 			},
 			{
 				test: /\.(js)$/,
-				loader: "babel-loader",
-				exclude: "/node_modules",
+				loader: "esbuild-loader",
 				options: {
-					cacheDirectory: true,
+					target: "es2025",
 				},
 			},
 		],
@@ -49,7 +48,7 @@ module.exports = {
 	],
 	optimization: {
 		minimize: true,
-		minimizer: [new EsbuildPlugin({ target: "es2016" })],
+		minimizer: [new EsbuildPlugin({ target: "es2025" })],
 		splitChunks: {
 			cacheGroups: {
 				vendor: {

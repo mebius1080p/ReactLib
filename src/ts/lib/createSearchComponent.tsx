@@ -218,7 +218,7 @@ export default function createSearchComponent<T extends TCondition, S, U = {}>(
 		/**
 		 * render
 		 */
-		public render(): JSX.Element {
+		public render(): React.ReactElement {
 			const { paging, condition, records, other } = this.state;
 			return (
 				<WrappedComponent

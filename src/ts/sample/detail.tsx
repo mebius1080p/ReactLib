@@ -1,8 +1,8 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { SampleAbstractDetail } from "./SampleAbstractDetail";
 
-"use strict";
+("use strict");
 document.addEventListener(
 	"DOMContentLoaded",
 	() => {
@@ -11,12 +11,12 @@ document.addEventListener(
 		if (appElm === null) {
 			throw new Error("app element not found");
 		}
-		ReactDOM.render(
+		const root = createRoot(appElm);
+		root.render(
 			<React.StrictMode>
 				<SampleAbstractDetail />
 			</React.StrictMode>,
-			appElm
 		);
 	},
-	false
+	false,
 );

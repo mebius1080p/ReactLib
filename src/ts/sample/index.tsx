@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { SearchWithHook } from "./SearchWithHook";
 
 "use strict";
@@ -11,13 +11,13 @@ document.addEventListener(
 		if (appElm === null) {
 			throw new Error("app not found");
 		}
-		ReactDOM.render(
+		const root = createRoot(appElm);
+		root.render(
 			<React.StrictMode>
 				<div className="container">
 					<SearchWithHook />
 				</div>
-			</React.StrictMode>,
-			appElm
+			</React.StrictMode>
 		);
 	},
 	false

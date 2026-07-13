@@ -1,7 +1,7 @@
 import * as React from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
-import format from "date-fns/format";
-import ja from "date-fns/locale/ja";
+import { format } from "date-fns/format";
+import { ja } from "date-fns/locale/ja";
 
 (ja.options as any).weekStartsOn = 0; // 日曜から始まるようにする
 registerLocale("ja", ja);
@@ -12,7 +12,7 @@ interface IInputDateProps {
 	handleChangeInput: (
 		ev: React.SyntheticEvent<any, Event> | undefined,
 		name: string,
-		value: string
+		value: string,
 	) => void;
 	size?: TBS4Size;
 	extraClass?: string;
@@ -26,7 +26,7 @@ export type TBS4Size = "xs" | "sm" | "md" | "lg" | "xl" | "";
  * @param props props
  */
 export const InputDate: React.FunctionComponent<IInputDateProps> = (
-	props: IInputDateProps
+	props: IInputDateProps,
 ) => {
 	const {
 		name,
@@ -58,7 +58,7 @@ export const InputDate: React.FunctionComponent<IInputDateProps> = (
 			selected={date}
 			dateFormat={dateFormat}
 			locale="ja"
-			onChange={(date, event) => {
+			onChange={(date: Date | null, event: any) => {
 				let dateString = "";
 				if (date instanceof Date) {
 					dateString = format(date, "yyyy-MM-dd");
@@ -77,7 +77,7 @@ interface IInputDateFuncVersionProps {
 	// injected by react-datepicker
 	onClick?: (
 		dt: Date | null,
-		event: React.SyntheticEvent<any, Event>
+		event: React.SyntheticEvent<any, Event>,
 	) => void;
 }
 
@@ -91,7 +91,7 @@ export const InputDateFuncVersion: React.FunctionComponent<
 		extraClass = "",
 		onClick = (
 			date: Date | null,
-			ev: React.SyntheticEvent<any, Event>
+			ev: React.SyntheticEvent<any, Event>,
 		) => {},
 	} = props;
 
